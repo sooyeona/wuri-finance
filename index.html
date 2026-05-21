@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="images/icon.png">
 <meta name="theme-color" content="#F7F7FA">
 <title>우리의 자산</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -84,7 +85,7 @@ body{font-family:-apple-system,'Apple SD Gothic Neo','Noto Sans KR',system-ui,sa
 .bucket-detail{background:var(--bg);border-radius:10px;padding:10px;margin-top:8px;border:1px solid var(--border);}
 .btx-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);}
 .btx-row:last-child{border-bottom:none;}
-.info-box{padding:10px 12px;border-radius:10px;background:var(--a-bg);border:1px solid #D5CFFF;font-size:11px;color:var(--a);margin-bottom:10px;line-height:1.6;}
+.info-box{padding:10px 12px;border-radius:10px;background:var(--a-bg);border:1px solid #D5CFFF;font-size:11px;color:#e84040;margin-bottom:10px;line-height:1.6;}
 .year-bar{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
 .year-bar-label{font-size:10px;color:var(--text2);width:28px;flex-shrink:0;font-weight:600;}
 .year-bar-track{flex:1;height:8px;border-radius:4px;background:var(--border);overflow:hidden;}
@@ -131,8 +132,8 @@ const BUCKETS=[
    items:[{id:'liv_food',label:'식비/장보기',icon:'🥬'},{id:'liv_delivery',label:'배달/외식',icon:'🍱'},{id:'liv_shop',label:'쿠팡/생필품',icon:'📦'},{id:'liv_cafe',label:'편의점/카페',icon:'☕'},{id:'liv_trans',label:'교통비',icon:'🚇'}]},
   {id:'insurance',label:'보험/의료',icon:'🛡️',color:'#8B5CF6',desc:'보험료·병원/약국',type:'fixed',
    items:[{id:'ins_fee',label:'보험료',icon:'🛡️'},{id:'ins_med',label:'병원/약국',icon:'🏥'}]},
-  {id:'allowance',label:'개인 용돈',icon:'💸',color:'#EC4899',desc:'A·B 각자 용돈',type:'fixed',
-   items:[{id:'all_a',label:'A 용돈',icon:'💜'},{id:'all_b',label:'B 용돈',icon:'❤️'}]},
+  {id:'allowance',label:'개인 용돈',icon:'💸',color:'#EC4899',desc:'김수연·신동현 각자 용돈',type:'fixed',
+   items:[{id:'all_a',label:'김수연 용돈',icon:'💜'},{id:'all_b',label:'신동현 용돈',icon:'❤️'}]},
   {id:'event',label:'경조사/가족',icon:'🎁',color:C.gold,desc:'경조사·부모님/명절',type:'save',
    items:[{id:'evt_condolence',label:'경조사',icon:'🎁'},{id:'evt_family',label:'부모님/가족행사',icon:'👨‍👩‍👧'}]},
   {id:'emergency',label:'비상금',icon:'🆘',color:C.green,desc:'비상금·비수기 대비',type:'save',
@@ -517,16 +518,16 @@ function rSpending(){
     ${isCur?`<button class="btn bt${APP.who.toLowerCase()}" style="font-size:11px;" onclick="openModal('expense')">+ 추가</button>`:'<span class="ltag">📅 과거</span>'}
   </div>
   <div class="g3">
-    <div class="card c${APP.who.toLowerCase()}" style="margin-bottom:0;"><div style="font-size:8px;color:${isB?C.b:C.a};font-weight:700;margin-bottom:3px;">총 지출</div><div style="font-size:16px;font-weight:800;color:${isB?C.b:C.a};">${fmt(total)}</div></div>
+    <div class="card" style="background:#FBECED;margin-bottom:0;"><div style="font-size:8px;color:#DE7071;font-weight:700;margin-bottom:3px;">총 지출</div><div style="font-size:16px;font-weight:800;color#DE7071">${fmt(total)}</div></div>
     <div class="card" style="margin-bottom:0;"><div style="font-size:8px;color:var(--text3);font-weight:600;margin-bottom:3px;">대비</div><div style="font-size:16px;font-weight:800;color:var(--gold);">${base>0?Math.round(total/base*100)+'%':'—'}</div></div>
-    <div class="card cgr" style="margin-bottom:0;"><div style="font-size:8px;color:var(--green);font-weight:700;margin-bottom:3px;">잔액</div><div style="font-size:16px;font-weight:800;color:var(--green);">${fmt(base-total)}</div></div>
+    <div class="card" style="background:#EDF3E6;margin-bottom:0;"><div style="font-size:8px;color:#7BA74E;font-weight:700;margin-bottom:3px;">잔액</div><div style="font-size:16px;font-weight:800;color:#7BA74E;">${fmt(base-total)}</div></div>
   </div>
   <div style="height:8px;"></div>
   ${isB&&bGroups?bGroups.map(b=>{
     const pct=b.plan>0?Math.min(100,Math.round(b.spent/b.plan*100)):0;
     const over=b.spent>b.plan&&b.plan>0;
     const rem=b.plan-b.spent;
-    return`<div class="card" style="border-left:3px solid ${b.color};">
+    return`<div class="card"">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
         <div style="display:flex;align-items:center;gap:7px;">
           <span style="font-size:18px;">${b.icon}</span>
@@ -707,7 +708,7 @@ function rGoals(){
   ${goals.map(g=>{
     const pct=Number(g.target)>0?Math.min(100,Math.round(Number(g.current||0)/Number(g.target)*100)):0;
     const mine=!g.owner||g.owner===APP.who;
-    return`<div class="card" style="border-left:3px solid ${g.color};">
+    return`<div class="card">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
         <div><div style="font-size:14px;font-weight:800;">${g.title}</div>${g.deadline?`<div style="font-size:10px;color:var(--text3);margin-top:2px;">📅 ${g.deadline}</div>`:''}</div>
         ${mine?`<button class="btsm" style="background:var(--b-bg);color:var(--b);border:1px solid #FFCCCC;" onclick="delGoal(${g.id})">삭제</button>`:''}
