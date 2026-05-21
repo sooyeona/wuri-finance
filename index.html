@@ -16,8 +16,8 @@ body{font-family:-apple-system,'Apple SD Gothic Neo','Noto Sans KR',system-ui,sa
   --bg:#F7F7FA;--surface:#FFFFFF;--card:#FFFFFF;
   --border:#E8E8F0;--border2:#D0D0E0;
   --text:#1A1A2E;--text2:#5A5A7A;--text3:#9A9AB0;
-  --a:#6C5CE7;--al:#8B7CF8;--a-bg:#EEF0FF;
-  --b:#E84040;--bl:#FF6B6B;--b-bg:#FFF0F0;
+  --a:#E6819A;--al:#E36584;--a-bg:#EEF0FF;
+  --b:#6AACD5;--bl:#3F98D0;--b-bg:#FFF0F0;
   --green:#00A878;--green-bg:#E6F7F3;
   --gold:#C97A00;--gold-bg:#FFF3E0;
   --blue:#2E86DE;--blue-bg:#EBF4FF;
@@ -32,13 +32,13 @@ body{font-family:-apple-system,'Apple SD Gothic Neo','Noto Sans KR',system-ui,sa
 .sync-dot.saving{animation:blink 0.5s infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
 .bottom-nav{background:var(--surface);border-top:1px solid var(--border);display:flex;flex-shrink:0;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -1px 4px rgba(0,0,0,0.05);}
-.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:7px 2px;gap:2px;border:none;background:transparent;color:var(--text3);font-family:inherit;cursor:pointer;font-size:9px;font-weight:600;min-width:0;}
+.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:15px 2px;gap:2px;border:none;background:transparent;color:var(--text3);font-family:inherit;cursor:pointer;font-size:9px;font-weight:600;min-width:0;}
 .bnav-btn.on{color:var(--a);}
 .bnav-btn .ni{font-size:19px;}
 .main{flex:1;overflow-y:auto;overflow-x:hidden;padding:14px 12px 16px;-webkit-overflow-scrolling:touch;}
 .card{background:var(--card);border-radius:14px;padding:14px;border:1px solid var(--border);margin-bottom:10px;box-shadow:var(--shadow);}
-.ca{border-left:3px solid var(--a);}.cb{border-left:3px solid var(--b);}
-.cgr{border-left:3px solid var(--green);}.cgo{border-left:3px solid var(--gold);}
+.ca{background: #F6ECEF;}.cb{background: #EAF1F8;}
+.cgr{border-left:3px solid var(--green);}
 .g2{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px;}
 .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;}
 .sv{font-weight:800;font-size:20px;letter-spacing:-0.5px;}
@@ -79,7 +79,7 @@ body{font-family:-apple-system,'Apple SD Gothic Neo','Noto Sans KR',system-ui,sa
 .month-tabs{display:flex;gap:5px;overflow-x:auto;padding:2px 0 8px;scrollbar-width:none;}
 .month-tabs::-webkit-scrollbar{display:none;}
 .mtab{flex-shrink:0;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;border:1.5px solid var(--border);background:var(--surface);color:var(--text2);cursor:pointer;}
-.mtab.on{background:var(--a);color:#fff;border-color:var(--a);}
+.mtab.on{background:#EDF3E6;color:#111;}
 .chart-wrap{position:relative;width:100%;padding:4px 0;}
 .bucket-detail{background:var(--bg);border-radius:10px;padding:10px;margin-top:8px;border:1px solid var(--border);}
 .btx-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);}
@@ -333,18 +333,18 @@ function rDashboard(){
   </div>
   <div class="g2">
     <div class="card ca" style="margin-bottom:0;">
-      <div style="font-size:9px;color:var(--a);font-weight:700;margin-bottom:5px;">💎 ${nm('A')}</div>
-      <div class="sv" style="color:var(--a);">${fmt(incA)}</div>
+      <div style="font-size:11px;color:#222;font-weight:700;margin-bottom:5px;">💎 ${nm('A')}</div>
+      <div class="sv" style="color:#222;">${fmt(incA)}</div>
       <div class="sl">저축/투자 ${fmt(spA)}</div>
     </div>
     <div class="card cb" style="margin-bottom:0;">
-      <div style="font-size:9px;color:var(--b);font-weight:700;margin-bottom:5px;">🏠 ${nm('B')} 수입</div>
-      <div class="sv" style="color:var(--b);">${fmt(incB)}</div>
+      <div style="font-size:11px;color:#222;font-weight:700;margin-bottom:5px;">🏠 ${nm('B')} 수입</div>
+      <div class="sv" style="color:#222;">${fmt(incB)}</div>
       <div class="sl">지출 ${fmt(spB)}</div>
     </div>
   </div>
   <div class="card cgo">
-    <div style="font-size:11px;font-weight:700;margin-bottom:8px;">💰 B 수입 흐름</div>
+    <div style="font-size:11px;font-weight:700;margin-bottom:8px;">💰 신동현 수입 흐름</div>
     <div class="flow">
       <div class="flow-item"><div style="font-size:8px;color:var(--text3);margin-bottom:2px;">총 수입</div><div style="font-size:13px;font-weight:800;color:var(--b);">${fmt(incB)}</div></div>
       <div class="flow-arrow">−</div>
@@ -358,7 +358,7 @@ function rDashboard(){
       ${surplus>0?`<span style="color:var(--green);font-weight:700;">🆘 +${fmt(surplus)} 비상금 가능</span>`:minPct>=100?`<span style="color:var(--green);font-weight:700;">✅ 목표 달성!</span>`:`<span style="color:var(--gold);font-weight:700;">${fmt(min-incB)} 남음</span>`}
     </div>`:''}
   </div>
-  <div class="card" style="border-left:3px solid var(--a);">
+  <div class="card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
       <span style="font-size:11px;font-weight:700;">📋 분배 현황</span>
       <span style="font-size:10px;font-weight:700;color:${dDone===BUCKETS.length?C.green:C.gold};background:${dDone===BUCKETS.length?C.greenbg:C.goldbg};padding:2px 8px;border-radius:10px;">${dDone}/${BUCKETS.length} 완료</span>
@@ -458,9 +458,9 @@ function rDistribute(){
     <h2 style="font-size:15px;font-weight:800;">💳 통장 분배</h2>
     ${canEdit?`<button class="btn btb" style="font-size:11px;" onclick="openModal('biz_expense')">🏭 사업비</button>`:''}
   </div>
-  <div class="card" style="background:var(--bg);">
+  <div class="card" style="background:#EAF1F8;">
     <div class="flow">
-      <div class="flow-item"><div style="font-size:8px;color:var(--text3);margin-bottom:2px;">총수입</div><div style="font-size:13px;font-weight:800;">${fmt(incB)}</div></div>
+      <div class="flow-item"><div style="font-size:8px;color:var(--text3);margin-bottom:2px;">공방 총수입</div><div style="font-size:13px;font-weight:800;">${fmt(incB)}</div></div>
       <div class="flow-arrow">−</div>
       <div class="flow-item"><div style="font-size:8px;color:var(--b);margin-bottom:2px;">사업비</div><div style="font-size:13px;font-weight:800;color:var(--b);">${fmt(biz)}</div></div>
       <div class="flow-arrow">=</div>
