@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<link rel="apple-touch-icon" href="images/icon.png">
 <meta name="theme-color" content="#F7F7FA">
 <title>우리의 자산</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -17,12 +16,13 @@ body{font-family:-apple-system,'Apple SD Gothic Neo','Noto Sans KR',system-ui,sa
   --bg:#F7F7FA;--surface:#FFFFFF;--card:#FFFFFF;
   --border:#E8E8F0;--border2:#D0D0E0;
   --text:#1A1A2E;--text2:#5A5A7A;--text3:#9A9AB0;
-  --a:#E6819A;--al:#E36584;--a-bg:#EEF0FF;
-  --b:#6AACD5;--bl:#3F98D0;--b-bg:#FFF0F0;
+  --a:#E6819A;--al:#E36584;--a-bg:#FFF0F4;
+  --b:#6AACD5;--bl:#3F98D0;--b-bg:#EBF4FF;
   --green:#00A878;--green-bg:#E6F7F3;
   --gold:#C97A00;--gold-bg:#FFF3E0;
   --blue:#2E86DE;--blue-bg:#EBF4FF;
-  --shadow:0 1px 4px rgba(0,0,0,0.08);
+  --red:#E84040;--red-bg:#FFF0F0;
+  --shadow:0 1px 4px rgba(0,0,0,0.07);
   --shadow2:0 4px 16px rgba(0,0,0,0.10);
 }
 #app{height:100vh;height:100dvh;display:flex;flex-direction:column;background:var(--bg);max-width:480px;margin:0 auto;position:relative;}
@@ -33,13 +33,15 @@ body{font-family:-apple-system,'Apple SD Gothic Neo','Noto Sans KR',system-ui,sa
 .sync-dot.saving{animation:blink 0.5s infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
 .bottom-nav{background:var(--surface);border-top:1px solid var(--border);display:flex;flex-shrink:0;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -1px 4px rgba(0,0,0,0.05);}
-.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:15px 2px;gap:2px;border:none;background:transparent;color:var(--text3);font-family:inherit;cursor:pointer;font-size:9px;font-weight:600;min-width:0;}
+.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 2px;gap:2px;border:none;background:transparent;color:var(--text3);font-family:inherit;cursor:pointer;font-size:9px;font-weight:600;min-width:0;transition:color .15s;}
 .bnav-btn.on{color:var(--a);}
-.bnav-btn .ni{font-size:19px;}
+.bnav-btn .ni{font-size:20px;}
 .main{flex:1;overflow-y:auto;overflow-x:hidden;padding:14px 12px 16px;-webkit-overflow-scrolling:touch;}
 .card{background:var(--card);border-radius:14px;padding:14px;border:1px solid var(--border);margin-bottom:10px;box-shadow:var(--shadow);}
-.ca{background: #F6ECEF;}.cb{background: #EAF1F8;}
-.cgr{border-left:3px solid var(--green);}
+.ca{background:#F6ECEF;border-color:#EDD5DC;}
+.cb{background:#EAF1F8;border-color:#C8DDEF;}
+.cgr{background:var(--green-bg);border-color:#B8E8D8;}
+.cgo{background:var(--gold-bg);border-color:#F0D090;}
 .g2{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px;}
 .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;}
 .sv{font-weight:800;font-size:20px;letter-spacing:-0.5px;}
@@ -51,8 +53,10 @@ body{font-family:-apple-system,'Apple SD Gothic Neo','Noto Sans KR',system-ui,sa
 .tg{display:inline-block;padding:2px 7px;border-radius:20px;font-size:9px;font-weight:700;}
 .ltag{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:20px;background:var(--gold-bg);color:var(--gold);font-size:9px;font-weight:700;}
 .btn{padding:9px 16px;border-radius:10px;font-size:12px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .15s;display:inline-flex;align-items:center;justify-content:center;gap:5px;}
-.bta{background:var(--a);color:#fff;}.btb{background:var(--b);color:#fff;}
+.bta{background:var(--a);color:#fff;}
+.btb{background:var(--b);color:#fff;}
 .btg{background:var(--surface);color:var(--text2);border:1.5px solid var(--border);}
+.btgr{background:var(--green);color:#fff;}
 .btsm{padding:3px 9px;border-radius:6px;font-size:10px;font-weight:600;border:none;cursor:pointer;font-family:inherit;}
 .btn:active,.btsm:active{transform:scale(0.95);}
 .inp{width:100%;background:var(--bg);border:1.5px solid var(--border);color:var(--text);border-radius:10px;padding:11px 13px;font-family:inherit;font-size:14px;outline:none;appearance:none;transition:border-color .15s;}
@@ -60,8 +64,11 @@ body{font-family:-apple-system,'Apple SD Gothic Neo','Noto Sans KR',system-ui,sa
 .lbl{font-size:10px;font-weight:700;color:var(--text2);letter-spacing:.04em;margin-bottom:5px;display:block;}
 .row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);}
 .row:last-child{border-bottom:none;}
-.chk-row{display:flex;align-items:flex-start;justify-content:space-between;padding:12px 13px;border-radius:12px;margin-bottom:7px;border:1.5px solid var(--border);background:var(--surface);box-shadow:var(--shadow);}
-.chk-done{background:#F0FBF7;border-color:#A8DCC8;}
+/* 분배 행 */
+.dist-row{display:flex;align-items:flex-start;justify-content:space-between;padding:12px 13px;border-radius:12px;margin-bottom:7px;border:1.5px solid var(--border);background:var(--surface);box-shadow:var(--shadow);}
+.dist-done{background:#F0FBF7;border-color:#A8DCC8;}
+.dist-partial{background:#FFFBF0;border-color:#F0D090;}
+/* 모달 */
 .moverlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:flex-end;justify-content:center;z-index:200;padding-bottom:env(safe-area-inset-bottom);}
 .mbox{background:var(--surface);border-radius:22px 22px 0 0;padding:20px 18px;width:100%;max-width:480px;max-height:92vh;overflow-y:auto;}
 .mhandle{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 16px;}
@@ -80,66 +87,75 @@ body{font-family:-apple-system,'Apple SD Gothic Neo','Noto Sans KR',system-ui,sa
 .month-tabs{display:flex;gap:5px;overflow-x:auto;padding:2px 0 8px;scrollbar-width:none;}
 .month-tabs::-webkit-scrollbar{display:none;}
 .mtab{flex-shrink:0;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;border:1.5px solid var(--border);background:var(--surface);color:var(--text2);cursor:pointer;}
-.mtab.on{background:#EDF3E6;color:#111;}
+.mtab.on{background:#EDF3E6;color:#2A5A1A;border-color:#B8D8A0;}
 .chart-wrap{position:relative;width:100%;padding:4px 0;}
 .bucket-detail{background:var(--bg);border-radius:10px;padding:10px;margin-top:8px;border:1px solid var(--border);}
 .btx-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);}
 .btx-row:last-child{border-bottom:none;}
-.info-box{padding:10px 12px;border-radius:10px;background:var(--a-bg);border:1px solid #D5CFFF;font-size:11px;color:#e84040;margin-bottom:10px;line-height:1.6;}
+.info-box{padding:10px 12px;border-radius:10px;background:#FFF8E1;border:1px solid #FFE082;font-size:11px;color:#8B6000;margin-bottom:10px;line-height:1.6;}
 .year-bar{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
 .year-bar-label{font-size:10px;color:var(--text2);width:28px;flex-shrink:0;font-weight:600;}
 .year-bar-track{flex:1;height:8px;border-radius:4px;background:var(--border);overflow:hidden;}
 .year-bar-fill{height:100%;border-radius:4px;}
 .year-bar-val{font-size:10px;font-weight:700;color:var(--text);width:60px;text-align:right;flex-shrink:0;}
+/* 지출탭 섹션 구분 */
+.spend-section-head{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:9px;margin-bottom:7px;font-size:11px;font-weight:700;}
 </style>
 </head>
 <body>
 <div id="app"></div>
 <script>
-// ── 데이터 저장소: localStorage 우선, Firebase 있으면 동기화 ──
-const STORAGE_KEY = 'wuri-finance-data';
-
-// Firebase 설정 (비어있으면 localStorage만 사용)
-const FIREBASE_CONFIG = {
-  apiKey: "AIzaSyDR52BFNnM7Yd5EFKT-_SHw7f0gczWR-FQ",
-  authDomain: "wuri-finance.firebaseapp.com",
-  databaseURL: "https://wuri-finance-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "wuri-finance",
-  storageBucket: "wuri-finance.firebasestorage.app",
-  messagingSenderId: "260229020877",
-  appId: "1:260229020877:web:a6f818ea6b39e75225fd84"
+const STORAGE_KEY='wuri-finance-data';
+const FIREBASE_CONFIG={
+  apiKey:"AIzaSyDR52BFNnM7Yd5EFKT-_SHw7f0gczWR-FQ",
+  authDomain:"wuri-finance.firebaseapp.com",
+  databaseURL:"https://wuri-finance-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId:"wuri-finance",
+  storageBucket:"wuri-finance.firebasestorage.app",
+  messagingSenderId:"260229020877",
+  appId:"1:260229020877:web:a6f818ea6b39e75225fd84"
 };
-const USE_FIREBASE = !!(FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.databaseURL);
+const USE_FIREBASE=!!(FIREBASE_CONFIG.apiKey&&FIREBASE_CONFIG.databaseURL);
 
 const C={
-  a:'#6C5CE7',al:'#8B7CF8',abg:'#EEF0FF',
-  b:'#E84040',bl:'#FF6B6B',bbg:'#FFF0F0',
+  a:'#E6819A',al:'#E36584',abg:'#FFF0F4',
+  b:'#6AACD5',bl:'#3F98D0',bbg:'#EBF4FF',
   green:'#00A878',greenbg:'#E6F7F3',
   gold:'#C97A00',goldbg:'#FFF3E0',
   blue:'#2E86DE',bluebg:'#EBF4FF',
+  red:'#E84040',redbg:'#FFF0F0',
   text:'#1A1A2E',text2:'#5A5A7A',text3:'#9A9AB0',
   border:'#E8E8F0',bg:'#F7F7FA',surface:'#FFFFFF'
 };
 
+// ══════════════════════════════════════════
+// 버킷 타입 정의
+//  biz      : 사업비 (수입에서 선차감)
+//  transfer : 이체형 - 이체완료 = 지출 자동반영 (용돈, 고정비)
+//  budget   : 예산형 - 이체완료 후 실지출 상세입력 (생활비)
+//  save     : 적립형 - 이체완료 후 꺼낼때만 입력 (세금,비상금,경조사)
+// ══════════════════════════════════════════
 const BUCKETS=[
-  {id:'biz',label:'사업운영비',icon:'🏭',color:C.b,desc:'재료비·공방월세·소모품',type:'biz',
-   items:[{id:'biz_rent',label:'공방 월세',icon:'🏭'},{id:'biz_material',label:'재료비/은 구매',icon:'⚗️'},{id:'biz_misc',label:'소모품/택배/기타',icon:'📦'}]},
-  {id:'tax',label:'세금 적립',icon:'📑',color:C.gold,desc:'종합소득세·부가세 대비',type:'save',
+  {id:'workshop',  label:'공방 월세',   icon:'🏭',color:'#7C6AF7',desc:'매월 고정 임대료',               type:'transfer',
+   items:[{id:'biz_rent',label:'공방 월세',icon:'🏭'}]},
+  {id:'biz',      label:'사업 변동비', icon:'⚗️',color:C.red,   desc:'재료비·소모품 (월별 변동, 수시 입력)',type:'biz',
+   items:[{id:'biz_material',label:'재료비/은 구매',icon:'⚗️'},{id:'biz_misc',label:'소모품/택배/기타',icon:'📦'}]},
+  {id:'tax',      label:'세금 적립',  icon:'📑',color:C.gold,  desc:'종합소득세·부가세 대비',        type:'save',
    items:[{id:'tax_income',label:'종합소득세 적립',icon:'📑'},{id:'tax_extra',label:'추가 세금 안전금',icon:'🛡️'}]},
-  {id:'housing',label:'주거 고정비',icon:'🏠',color:C.a,desc:'집월세·관리비·공과금·통신',type:'fixed',
+  {id:'housing',  label:'주거 고정비',icon:'🏠',color:'#7C6AF7',desc:'집월세·관리비·공과금·통신',  type:'transfer',
    items:[{id:'hou_rent',label:'집 월세',icon:'🏠'},{id:'hou_mgmt',label:'관리비',icon:'🔧'},{id:'hou_util',label:'전기/가스/수도',icon:'💡'},{id:'hou_net',label:'인터넷/통신',icon:'📡'}]},
-  {id:'living',label:'생활비',icon:'🛒',color:C.blue,desc:'식비·배달·쿠팡·교통',type:'variable',
+  {id:'living',   label:'생활비',     icon:'🛒',color:C.blue,  desc:'식비·배달·쿠팡·교통',          type:'budget',
    items:[{id:'liv_food',label:'식비/장보기',icon:'🥬'},{id:'liv_delivery',label:'배달/외식',icon:'🍱'},{id:'liv_shop',label:'쿠팡/생필품',icon:'📦'},{id:'liv_cafe',label:'편의점/카페',icon:'☕'},{id:'liv_trans',label:'교통비',icon:'🚇'}]},
-  {id:'insurance',label:'보험/의료',icon:'🛡️',color:'#8B5CF6',desc:'보험료·병원/약국',type:'fixed',
+  {id:'insurance',label:'보험/의료',  icon:'🛡️',color:'#8B5CF6',desc:'보험료·병원/약국',             type:'transfer',
    items:[{id:'ins_fee',label:'보험료',icon:'🛡️'},{id:'ins_med',label:'병원/약국',icon:'🏥'}]},
-  {id:'allowance',label:'개인 용돈',icon:'💸',color:'#EC4899',desc:'김수연·신동현 각자 용돈',type:'fixed',
+  {id:'allowance',label:'개인 용돈',  icon:'💸',color:C.a,     desc:'김수연·신동현 각자 용돈',       type:'transfer',
    items:[{id:'all_a',label:'김수연 용돈',icon:'💜'},{id:'all_b',label:'신동현 용돈',icon:'❤️'}]},
-  {id:'event',label:'경조사/가족',icon:'🎁',color:C.gold,desc:'경조사·부모님/명절',type:'save',
+  {id:'event',    label:'경조사/가족',icon:'🎁',color:C.gold,  desc:'경조사·부모님/명절',            type:'save',
    items:[{id:'evt_condolence',label:'경조사',icon:'🎁'},{id:'evt_family',label:'부모님/가족행사',icon:'👨‍👩‍👧'}]},
-  {id:'emergency',label:'비상금',icon:'🆘',color:C.green,desc:'비상금·비수기 대비',type:'save',
+  {id:'emergency',label:'비상금',     icon:'🆘',color:C.green, desc:'비상금·비수기 대비',            type:'save',
    items:[{id:'emg_main',label:'비상금 적립',icon:'🆘'},{id:'emg_offseason',label:'비수기 대비',icon:'❄️'}]},
 ];
-const ALL_B=BUCKETS.flatMap(b=>b.items.map(i=>({...i,bucketId:b.id,bucketLabel:b.label,bucketColor:b.color})));
+const ALL_B=BUCKETS.flatMap(b=>b.items.map(i=>({...i,bucketId:b.id,bucketLabel:b.label,bucketColor:b.color,bucketType:b.type})));
 const CATS_A=[
   {id:'sav',label:'저축',icon:'🏦',color:C.a},{id:'stk',label:'주식',icon:'📈',color:C.green},
   {id:'etf',label:'펀드/ETF',icon:'💹',color:'#059669'},{id:'coin',label:'코인',icon:'₿',color:C.gold},
@@ -154,6 +170,16 @@ const tod=()=>new Date().toISOString().split('T')[0];
 const tMonth=()=>{const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;};
 const tYear=()=>String(new Date().getFullYear());
 
+// 25일 기준 분배 주기: 해당 월의 25일
+const distDay=m=>`${m}-25`;
+// 이번 달 분배일까지 남은 날
+const daysToDistDay=()=>{
+  const today=new Date();
+  const dd=new Date(`${tMonth()}-25`);
+  const diff=Math.ceil((dd-today)/(1000*60*60*24));
+  return diff;
+};
+
 const DEF_DATA={incomes:[],expenses:[],goals:[],settings:{
   nameA:'김수연',nameB:'신동현',avgIncomeB:8000000,minIncomeB:6000000,maxIncomeB:10000000,
   bucketTargets:{biz_rent:1000000,biz_material:500000,biz_misc:200000,tax_income:1200000,tax_extra:400000,
@@ -163,50 +189,28 @@ const DEF_DATA={incomes:[],expenses:[],goals:[],settings:{
   distributed:{},accum:{}}};
 
 let APP={tab:'dashboard',who:null,modal:null,form:{},viewMonth:tMonth(),viewYear:tYear(),
-  data:JSON.parse(JSON.stringify(DEF_DATA)),db:null,dbRef:null,saving:false};
+  data:JSON.parse(JSON.stringify(DEF_DATA)),dbRef:null};
 
-// ── localStorage 로드 ──
 function loadLocal(){
-  try{
-    const raw=localStorage.getItem(STORAGE_KEY);
-    if(raw){
-      APP.data=JSON.parse(raw);
-      fixData();
-    }
-  }catch(e){}
+  try{const raw=localStorage.getItem(STORAGE_KEY);if(raw){APP.data=JSON.parse(raw);fixData();}}catch(e){}
 }
-
 function fixData(){
   const d=APP.data;
-  if(!d.incomes)d.incomes=[];
-  if(!d.expenses)d.expenses=[];
-  if(!d.goals)d.goals=[];
+  if(!d.incomes)d.incomes=[];if(!d.expenses)d.expenses=[];if(!d.goals)d.goals=[];
   if(!d.settings)d.settings={...JSON.parse(JSON.stringify(DEF_DATA.settings))};
   const s=d.settings;
   if(!s.bucketTargets)s.bucketTargets={...DEF_DATA.settings.bucketTargets};
-  if(!s.distributed)s.distributed={};
-  if(!s.accum)s.accum={};
+  if(!s.distributed)s.distributed={};if(!s.accum)s.accum={};
 }
-
-// ── 저장 (즉시 localStorage + 비동기 Firebase) ──
 function persist(){
-  // 1. localStorage 즉시 저장
   try{localStorage.setItem(STORAGE_KEY,JSON.stringify(APP.data));}catch(e){}
-  // 2. 화면 즉시 갱신
   render();
-  // 3. Firebase 있으면 비동기 저장
   if(APP.dbRef){
     const dot=document.querySelector('.sync-dot');
     if(dot)dot.classList.add('saving');
-    APP.dbRef.set(APP.data).then(()=>{
-      if(dot)dot.classList.remove('saving');
-    }).catch(()=>{
-      if(dot)dot.classList.remove('saving');
-    });
+    APP.dbRef.set(APP.data).then(()=>{if(dot)dot.classList.remove('saving');}).catch(()=>{if(dot)dot.classList.remove('saving');});
   }
 }
-
-// ── Firebase 초기화 (선택적) ──
 function initFirebase(){
   if(!USE_FIREBASE)return;
   import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js').then(({initializeApp})=>{
@@ -214,31 +218,44 @@ function initFirebase(){
       const fbApp=initializeApp(FIREBASE_CONFIG);
       const db=getDatabase(fbApp);
       APP.dbRef={set:(data)=>set(ref(db,'wuri-finance'),data)};
-      // 원격 데이터 수신 (다른 기기에서 변경 시)
       onValue(ref(db,'wuri-finance'),snap=>{
         const val=snap.val();
-        if(val){
-          APP.data=val;
-          fixData();
-          // localStorage도 업데이트
-          try{localStorage.setItem(STORAGE_KEY,JSON.stringify(APP.data));}catch(e){}
-          render();
-        }
+        if(val){APP.data=val;fixData();try{localStorage.setItem(STORAGE_KEY,JSON.stringify(APP.data));}catch(e){}render();}
       });
     });
-  }).catch(e=>console.log('Firebase 없이 실행'));
+  }).catch(()=>{});
 }
 
+// ── 헬퍼 ──
 const nm=id=>id==='A'?(APP.data.settings.nameA||'김수연'):(APP.data.settings.nameB||'신동현');
 const tgt=id=>Number(APP.data.settings.bucketTargets?.[id]||0);
 const bTgt=bid=>BUCKETS.find(b=>b.id===bid)?.items.reduce((s,i)=>s+tgt(i.id),0)||0;
-const mInc=m=>(APP.data.incomes||[]).filter(i=>i.user==='B'&&i.date?.startsWith(m)).reduce((s,i)=>s+Number(i.amount||0),0);
-const mBiz=m=>(APP.data.expenses||[]).filter(e=>e.user==='B'&&e.date?.startsWith(m)&&BUCKETS[0].items.find(i=>i.id===e.category)).reduce((s,e)=>s+Number(e.amount||0),0);
-const mDisp=m=>Math.max(0,mInc(m)-mBiz(m));
-const itemAct=(id,m)=>(APP.data.expenses||[]).filter(e=>e.category===id&&e.date?.startsWith(m)).reduce((s,e)=>s+Number(e.amount||0),0);
-const bAct=(bid,m)=>BUCKETS.find(b=>b.id===bid)?.items.reduce((s,i)=>s+itemAct(i.id,m),0)||0;
-const isDist=bid=>!!(APP.data.settings.distributed||{})[APP.viewMonth+'_'+bid];
 const vm=()=>APP.viewMonth;
+const isDist=bid=>!!(APP.data.settings.distributed||{})[vm()+'_'+bid];
+
+// 수입 / 사업비 / 가처분
+const mInc=m=>(APP.data.incomes||[]).filter(i=>i.user==='B'&&i.date?.startsWith(m)).reduce((s,i)=>s+Number(i.amount||0),0);
+const BIZ_BUCKET=()=>BUCKETS.find(b=>b.id==='biz');
+const mBiz=m=>(APP.data.expenses||[]).filter(e=>e.user==='B'&&e.date?.startsWith(m)&&BIZ_BUCKET()?.items.find(i=>i.id===e.category)).reduce((s,e)=>s+Number(e.amount||0),0);
+const mDisp=m=>Math.max(0,mInc(m)-mBiz(m));
+
+// 이체완료된 버킷의 계획금액 합계 (transfer+budget+save, biz 제외)
+const mTransferred=m=>BUCKETS.filter(b=>b.id!=='biz'&&isDist(b.id)).reduce((s,b)=>s+bTgt(b.id),0);
+
+// 이체 후 잔액 (가처분 - 이체완료 합계)
+const mAfterDist=m=>mDisp(m)-mTransferred(m);
+
+// 실제 지출 (expenses에 기록된 것, biz 제외)
+const itemAct=(id,m)=>(APP.data.expenses||[]).filter(e=>e.category===id&&e.date?.startsWith(m)&&!BIZ_BUCKET()?.items.find(i=>i.id===e.category)).reduce((s,e)=>s+Number(e.amount||0),0);
+const bAct=(bid,m)=>BUCKETS.find(b=>b.id===bid)?.items.reduce((s,i)=>s+itemAct(i.id,m),0)||0;
+
+// transfer형: 이체완료 = 계획금액 전체가 지출된 것으로 간주
+// budget형: 이체완료 + 실지출 상세 추적
+// save형: 이체완료 = 적립. 실제 사용은 별도
+const getBucketSpent=(b,m)=>{
+  if(b.type==='transfer'||b.type==='biz') return isDist(b.id)?bTgt(b.id):bAct(b.id,m);
+  return bAct(b.id,m);
+};
 
 function getMonths(){
   const s=new Set([tMonth()]);
@@ -256,6 +273,7 @@ function getYears(){
 let chartInst={};
 function destroyCharts(){Object.values(chartInst).forEach(c=>{try{c.destroy();}catch(e){}});chartInst={};}
 
+// ── 렌더 ──
 function render(){
   destroyCharts();
   const app=document.getElementById('app');
@@ -322,52 +340,72 @@ function rDashboard(){
   const min=Number(ss.minIncomeB||0),max=Number(ss.maxIncomeB||0);
   const minPct=min>0?Math.min(100,Math.round(incB/min*100)):0;
   const surplus=max>0&&incB>max?incB-max:0;
-  const dDone=BUCKETS.filter(b=>isDist(b.id)).length;
+  const dDone=BUCKETS.filter(b=>b.id!=='biz'&&isDist(b.id)).length;
+  const dTotal=BUCKETS.filter(b=>b.id!=='biz').length;
+  const transferred=mTransferred(m);
+  const afterDist=mAfterDist(m);
   const spA=(APP.data.expenses||[]).filter(e=>e.user==='A'&&e.date?.startsWith(m)).reduce((s,e)=>s+Number(e.amount||0),0);
-  const spB=(APP.data.expenses||[]).filter(e=>e.user==='B'&&e.date?.startsWith(m)).reduce((s,e)=>s+Number(e.amount||0),0);
+  // 실제 지출 합계 (transfer는 이체완료시 자동, budget/save는 입력값)
+  const totalSpentB=BUCKETS.filter(b=>b.id!=='biz').reduce((s,b)=>s+getBucketSpent(b,m),0);
   const recent=[...(APP.data.incomes||[]),...(APP.data.expenses||[])].filter(t=>t.date?.startsWith(m)).sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,6);
+  const daysLeft=daysToDistDay();
+  const isCur=m===tMonth();
   return`
   ${monthTabs()}
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
     <div style="font-size:12px;font-weight:700;color:var(--text2);">${m.replace('-','년 ')}월 요약</div>
-    <div style="background:var(--a-bg);border-radius:7px;padding:4px 9px;font-size:10px;font-weight:700;color:var(--a);">${APP.who==='A'?'💎':'🏠'} ${nm(APP.who)}</div>
+    ${isCur&&daysLeft>=0?`<div style="background:#FFF3E0;border-radius:7px;padding:4px 9px;font-size:10px;font-weight:700;color:var(--gold);">📅 분배일까지 ${daysLeft}일</div>`:isCur?`<div style="background:var(--green-bg);border-radius:7px;padding:4px 9px;font-size:10px;font-weight:700;color:var(--green);">📅 분배일 (25일)</div>`:''}
   </div>
   <div class="g2">
     <div class="card ca" style="margin-bottom:0;">
-      <div style="font-size:11px;color:#222;font-weight:700;margin-bottom:5px;">💎 ${nm('A')}</div>
-      <div class="sv" style="color:#222;">${fmt(incA)}</div>
+      <div style="font-size:11px;color:#B05070;font-weight:700;margin-bottom:5px;">💎 ${nm('A')}</div>
+      <div class="sv" style="color:#B05070;">${fmt(incA)}</div>
       <div class="sl">저축/투자 ${fmt(spA)}</div>
     </div>
     <div class="card cb" style="margin-bottom:0;">
-      <div style="font-size:11px;color:#222;font-weight:700;margin-bottom:5px;">🏠 ${nm('B')} 수입</div>
-      <div class="sv" style="color:#222;">${fmt(incB)}</div>
-      <div class="sl">지출 ${fmt(spB)}</div>
+      <div style="font-size:11px;color:#2E6EA0;font-weight:700;margin-bottom:5px;">🏠 ${nm('B')} 수입</div>
+      <div class="sv" style="color:#2E6EA0;">${fmt(incB)}</div>
+      <div class="sl">사업비 -${fmt(biz)}</div>
     </div>
   </div>
+
+  <!-- B 수입 흐름 요약 -->
   <div class="card cgo">
-    <div style="font-size:11px;font-weight:700;margin-bottom:8px;">💰 신동현 수입 흐름</div>
-    <div class="flow">
-      <div class="flow-item"><div style="font-size:8px;color:var(--text3);margin-bottom:2px;">총 수입</div><div style="font-size:13px;font-weight:800;color:var(--b);">${fmt(incB)}</div></div>
+    <div style="font-size:11px;font-weight:700;margin-bottom:8px;">💰 ${nm('B')} 수입 흐름</div>
+    <div class="flow" style="margin-bottom:8px;">
+      <div class="flow-item"><div style="font-size:8px;color:var(--text3);margin-bottom:2px;">총 수입</div><div style="font-size:13px;font-weight:800;color:#2E6EA0;">${fmt(incB)}</div></div>
       <div class="flow-arrow">−</div>
-      <div class="flow-item"><div style="font-size:8px;color:var(--text3);margin-bottom:2px;">사업비</div><div style="font-size:13px;font-weight:800;color:var(--b);">${fmt(biz)}</div></div>
+      <div class="flow-item"><div style="font-size:8px;color:var(--text3);margin-bottom:2px;">사업비</div><div style="font-size:13px;font-weight:800;color:${C.red};">${fmt(biz)}</div></div>
       <div class="flow-arrow">=</div>
       <div class="flow-item"><div style="font-size:8px;color:var(--green);margin-bottom:2px;">가처분</div><div style="font-size:13px;font-weight:800;color:var(--green);">${fmt(disp)}</div></div>
     </div>
-    ${min>0?`<div class="pw" style="height:7px;margin:8px 0 5px;"><div class="pf" style="width:${minPct}%;background:${minPct>=100?C.green:C.gold};"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:10px;padding:6px 0;border-top:1px solid var(--border);">
+      <span style="color:var(--text2);">이체완료 합계</span>
+      <span style="font-weight:700;color:#7C6AF7;">-${fmt(transferred)}</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:11px;padding:5px 0;border-top:1px solid var(--border);">
+      <span style="font-weight:700;color:var(--text2);">분배 후 잔액</span>
+      <span style="font-weight:800;color:${afterDist>=0?C.green:C.red};">${fmt(afterDist)}</span>
+    </div>
+    ${min>0?`<div style="margin-top:6px;"><div class="pw" style="height:6px;margin-bottom:4px;"><div class="pf" style="width:${minPct}%;background:${minPct>=100?C.green:C.gold};"></div></div>
     <div style="display:flex;justify-content:space-between;font-size:10px;">
       <span style="color:var(--text3);">최소목표 ${fmt(min)} · ${minPct}%</span>
       ${surplus>0?`<span style="color:var(--green);font-weight:700;">🆘 +${fmt(surplus)} 비상금 가능</span>`:minPct>=100?`<span style="color:var(--green);font-weight:700;">✅ 목표 달성!</span>`:`<span style="color:var(--gold);font-weight:700;">${fmt(min-incB)} 남음</span>`}
-    </div>`:''}
+    </div></div>`:''}
   </div>
+
+  <!-- 분배 현황 -->
   <div class="card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
       <span style="font-size:11px;font-weight:700;">📋 분배 현황</span>
-      <span style="font-size:10px;font-weight:700;color:${dDone===BUCKETS.length?C.green:C.gold};background:${dDone===BUCKETS.length?C.greenbg:C.goldbg};padding:2px 8px;border-radius:10px;">${dDone}/${BUCKETS.length} 완료</span>
+      <span style="font-size:10px;font-weight:700;color:${dDone===dTotal?C.green:C.gold};background:${dDone===dTotal?C.greenbg:C.goldbg};padding:2px 8px;border-radius:10px;">${dDone}/${dTotal} 완료</span>
     </div>
     <div style="display:flex;flex-wrap:wrap;gap:4px;">
-      ${BUCKETS.map(b=>{const d=isDist(b.id);return`<span style="padding:3px 8px;border-radius:6px;background:${d?b.color+'18':C.bg};border:1px solid ${d?b.color+'44':C.border};font-size:9px;font-weight:700;color:${d?b.color:C.text3};">${d?'✅':'○'} ${b.label}</span>`;}).join('')}
+      ${BUCKETS.filter(b=>b.id!=='biz').map(b=>{const d=isDist(b.id);return`<span style="padding:3px 8px;border-radius:6px;background:${d?b.color+'18':C.bg};border:1px solid ${d?b.color+'44':C.border};font-size:9px;font-weight:700;color:${d?b.color:C.text3};">${d?'✅':'○'} ${b.label}</span>`;}).join('')}
     </div>
   </div>
+
+  <!-- 최근 활동 -->
   <div class="card">
     <div class="sec">🕐 최근 활동</div>
     ${recent.length===0?'<div style="text-align:center;padding:16px;color:var(--text3);font-size:12px;">아직 내역이 없어요</div>':''}
@@ -377,11 +415,11 @@ function rDashboard(){
       const cat=[...ALL_B,...CATS_A].find(c=>c.id===tx.category);
       return`<div class="row">
         <div style="display:flex;align-items:center;gap:9px;">
-          <div style="width:32px;height:32px;border-radius:9px;background:${col}18;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">${cat?.icon||(tx.user==='A'?'💎':'🏠')}</div>
+          <div style="width:32px;height:32px;border-radius:9px;background:${col}22;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">${cat?.icon||(tx.user==='A'?'💎':'🏠')}</div>
           <div><div style="font-size:12px;font-weight:600;">${tx.note||tx.source||cat?.label||'내역'}</div>
           <div style="font-size:10px;color:var(--text3);">${nm(tx.user)} · ${fmtD(tx.date)}</div></div>
         </div>
-        <span style="font-weight:800;color:${isInc?C.green:C.b};font-size:13px;flex-shrink:0;">${isInc?'+':'-'}${fmt(tx.amount)}</span>
+        <span style="font-weight:800;color:${isInc?C.green:C.red};font-size:13px;flex-shrink:0;">${isInc?'+':'-'}${fmt(tx.amount)}</span>
       </div>`;
     }).join('')}
   </div>`;
@@ -404,13 +442,13 @@ function rIncome(){
     ${isCur?`<button class="btn bt${APP.who.toLowerCase()}" style="font-size:11px;" onclick="openModal('income')">+ 추가</button>`:'<span class="ltag">📅 과거 기록</span>'}
   </div>
   <div class="g2">
-    <div class="card ca" style="margin-bottom:0;"><div style="font-size:9px;color:var(--a);font-weight:700;margin-bottom:4px;">💎 ${nm('A')}</div><div class="sv" style="color:var(--a);">${fmt(tA)}</div><div class="sl">${incA.length}건</div></div>
-    <div class="card cb" style="margin-bottom:0;"><div style="font-size:9px;color:var(--b);font-weight:700;margin-bottom:4px;">🏠 ${nm('B')}</div><div class="sv" style="color:var(--b);">${fmt(tB)}</div><div class="sl">${incB.length}건</div></div>
+    <div class="card ca" style="margin-bottom:0;"><div style="font-size:9px;color:#B05070;font-weight:700;margin-bottom:4px;">💎 ${nm('A')}</div><div class="sv" style="color:#B05070;">${fmt(tA)}</div><div class="sl">${incA.length}건</div></div>
+    <div class="card cb" style="margin-bottom:0;"><div style="font-size:9px;color:#2E6EA0;font-weight:700;margin-bottom:4px;">🏠 ${nm('B')}</div><div class="sv" style="color:#2E6EA0;">${fmt(tB)}</div><div class="sl">${incB.length}건</div></div>
   </div>
   <div class="card cgo">
     <div class="g3" style="margin-bottom:${min>0?'8px':'0'};">
-      <div class="stat-mini"><div class="lbl2">총 입금</div><div class="val" style="color:var(--b);">${fmt(tB)}</div></div>
-      <div class="stat-mini"><div class="lbl2">사업비</div><div class="val" style="color:var(--b);">-${fmt(biz)}</div></div>
+      <div class="stat-mini"><div class="lbl2">총 입금</div><div class="val" style="color:#2E6EA0;">${fmt(tB)}</div></div>
+      <div class="stat-mini"><div class="lbl2">사업비 선차감</div><div class="val" style="color:${C.red};">-${fmt(biz)}</div></div>
       <div class="stat-mini" style="background:var(--green-bg);border-color:#B8E8D8;"><div class="lbl2">가처분</div><div class="val" style="color:var(--green);">${fmt(disp)}</div></div>
     </div>
     ${min>0?`<div class="pw" style="height:6px;margin-bottom:5px;"><div class="pf" style="width:${pct}%;background:${pct>=100?C.green:C.gold};"></div></div>
@@ -430,7 +468,7 @@ function rIncome(){
       </div>
       <div style="display:flex;align-items:center;gap:7px;flex-shrink:0;">
         <span style="font-weight:800;color:var(--green);font-size:13px;">+${fmt(inc.amount)}</span>
-        ${isCur?`<button class="btsm" style="background:var(--b-bg);color:var(--b);border:1px solid #FFCCCC;" onclick="delInc(${inc.id})">삭제</button>`:''}
+        ${isCur?`<button class="btsm" style="background:var(--red-bg);color:var(--red);border:1px solid #FFCCCC;" onclick="delInc(${inc.id})">삭제</button>`:''}
       </div>
     </div>`).join('')}
   </div>
@@ -446,175 +484,368 @@ function rIncome(){
   </div>`:''}`;
 }
 
-// ── 분배 ──
+// ── 분배 탭 ──
+// 핵심: 이체완료 버튼 = "이 통장에 돈 넣었다"는 확인
+// transfer형은 이체 = 지출 자동완료
+// budget형은 이체 = 생활비통장에 예산 배정 (실지출은 별도)
+// save형은 이체 = 적립통장에 넣음
 function rDistribute(){
   const m=vm();
   const incB=mInc(m),biz=mBiz(m),disp=mDisp(m);
-  const planTotal=BUCKETS.filter(b=>b.id!=='biz').reduce((s,b)=>s+bTgt(b.id),0);
-  const remaining=disp-planTotal;
+  const transferred=mTransferred(m);
+  const afterDist=mAfterDist(m);
   const canEdit=APP.who==='B'&&m===tMonth();
+
+  // 타입별 설명
+  const typeLabel={'transfer':'이체완료=지출완료','budget':'이체완료=예산배정','save':'이체완료=적립','biz':'사업비 선차감'};
+  const typeColor={'transfer':C.green,'budget':C.blue,'save':C.gold,'biz':C.red};
+  const typeIcon={'transfer':'🔄','budget':'💳','save':'🏦','biz':'🏭'};
+
   return`
   ${monthTabs()}
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
     <h2 style="font-size:15px;font-weight:800;">💳 통장 분배</h2>
-    ${canEdit?`<button class="btn btb" style="font-size:11px;" onclick="openModal('biz_expense')">🏭 사업비</button>`:''}
+    ${canEdit?`<button class="btn" style="font-size:11px;background:${C.red};color:#fff;" onclick="openModal('biz_expense')">⚗️ 재료비/소모품 입력</button>`:''}
   </div>
-  <div class="card" style="background:#EAF1F8;">
-    <div class="flow">
-      <div class="flow-item"><div style="font-size:8px;color:var(--text3);margin-bottom:2px;">공방 총수입</div><div style="font-size:13px;font-weight:800;">${fmt(incB)}</div></div>
+
+  <!-- 분배 현황 요약 카드 -->
+  <div class="card" style="background:#EAF1F8;border-color:#C8DDEF;margin-bottom:10px;">
+    <div style="font-size:10px;font-weight:700;color:var(--text2);margin-bottom:8px;">📊 이달 분배 현황 — 25일 분배일 기준</div>
+    <div class="flow" style="margin-bottom:8px;">
+      <div class="flow-item"><div style="font-size:8px;color:var(--text3);margin-bottom:2px;">총 수입</div><div style="font-size:13px;font-weight:800;color:#2E6EA0;">${fmt(incB)}</div></div>
       <div class="flow-arrow">−</div>
-      <div class="flow-item"><div style="font-size:8px;color:var(--b);margin-bottom:2px;">사업비</div><div style="font-size:13px;font-weight:800;color:var(--b);">${fmt(biz)}</div></div>
+      <div class="flow-item"><div style="font-size:8px;color:${C.red};margin-bottom:2px;">사업비</div><div style="font-size:13px;font-weight:800;color:${C.red};">${fmt(biz)}</div></div>
       <div class="flow-arrow">=</div>
       <div class="flow-item"><div style="font-size:8px;color:var(--green);margin-bottom:2px;">가처분</div><div style="font-size:13px;font-weight:800;color:var(--green);">${fmt(disp)}</div></div>
     </div>
-    <div style="display:flex;justify-content:space-between;font-size:11px;padding-top:8px;border-top:1px solid var(--border);margin-top:8px;">
-      <span style="color:var(--text2);">배분 후 잔액</span>
-      <span style="font-weight:800;color:${remaining>=0?C.green:C.b};">${fmt(remaining)}</span>
+    <div style="background:rgba(255,255,255,0.7);border-radius:8px;padding:8px 10px;">
+      <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:4px;">
+        <span style="color:var(--text2);">이체완료 합계</span>
+        <span style="font-weight:700;color:#7C6AF7;">-${fmt(transferred)}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;">
+        <span style="font-weight:700;color:var(--text2);">남은 분배 가능액</span>
+        <span style="font-weight:800;color:${afterDist>=0?C.green:C.red};">${fmt(afterDist)}</span>
+      </div>
     </div>
+    ${canEdit?`<div style="font-size:10px;color:#2E6EA0;margin-top:7px;">💡 25일 — 공방 수입통장에서 각 통장으로 이체 후 ✓ 완료<br>재료비·소모품은 살 때마다 별도 입력 (선차감 자동)</div>`:''}
   </div>
-  ${canEdit?`<div class="info-box">💡 매월 25일 — 각 통장 이체 후 ✓ 완료 체크</div>`:''}
-  ${BUCKETS.map(b=>{
-    const plan=bTgt(b.id),actual=bAct(b.id,m),done=isDist(b.id),isBiz=b.id==='biz';
-    return`<div class="${done?'chk-row chk-done':'chk-row'}">
+
+  <!-- 버킷 타입 안내 -->
+  ${canEdit?`<div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;">
+    ${Object.entries(typeLabel).filter(([k])=>k!=='biz').map(([k,v])=>`<span style="display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:20px;background:${typeColor[k]}18;border:1px solid ${typeColor[k]}44;font-size:9px;font-weight:700;color:${typeColor[k]};">${typeIcon[k]} ${v}</span>`).join('')}
+  </div>`:''}
+
+  <!-- 사업 변동비 (수시 입력, 선차감) -->
+  ${(()=>{
+    const b=BIZ_BUCKET();if(!b)return'';
+    const plan=bTgt(b.id),actual=bAct(b.id,m);
+    return`<div class="dist-row" style="border-color:${C.red}33;background:#FFF8F8;">
       <div style="display:flex;align-items:flex-start;gap:10px;flex:1;min-width:0;">
-        <div style="font-size:22px;margin-top:1px;">${b.icon}</div>
-        <div style="flex:1;min-width:0;">
-          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:3px;">
-            <span style="font-size:13px;font-weight:700;color:${done?b.color:C.text};">${b.label}</span>
-            ${isBiz?`<span class="tg" style="background:${C.bbg};color:${C.b};">선차감</span>`:''}
-            ${done?`<span class="tg" style="background:${C.greenbg};color:${C.green};">✅ 이체완료</span>`:''}
+        <div style="font-size:22px;margin-top:1px;">🏭</div>
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:2px;">
+            <span style="font-size:13px;font-weight:700;color:${C.red};">사업운영비</span>
+            <span class="tg" style="background:${C.red}18;color:${C.red};">선차감</span>
           </div>
-          <div style="font-size:10px;color:var(--text3);margin-bottom:4px;">${b.desc}</div>
-          <div style="font-size:10px;color:${actual>0?C.green:C.text3};">실지출 ${fmt(actual)} / 계획 ${fmt(plan)}</div>
-          <div style="margin-top:4px;">${b.items.filter(i=>tgt(i.id)>0).map(i=>`<div style="font-size:9px;color:var(--text3);margin-top:1px;">${i.icon} ${i.label}: ${fmt(tgt(i.id))}</div>`).join('')}</div>
+          <div style="font-size:10px;color:var(--text3);margin-bottom:3px;">재료비·소모품 (살 때마다 ⚗️ 버튼으로 입력 → 자동 선차감)</div>
+          <div style="font-size:10px;color:${actual>0?C.green:C.text3};">입력된 사업비: ${fmt(actual)}</div>
         </div>
       </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:7px;flex-shrink:0;margin-left:8px;">
-        <div style="font-size:15px;font-weight:800;color:${b.color};">${fmt(plan)}</div>
-        ${canEdit?`<button class="btsm" style="background:${done?'#F0FBF7':b.color};color:${done?C.green:'#fff'};border:1px solid ${done?C.green:b.color};" onclick="toggleDist('${b.id}')">${done?'✓완료':'완료'}</button>`:''}
-      </div>
+      <div style="font-size:15px;font-weight:800;color:${C.red};flex-shrink:0;margin-left:8px;">${fmt(actual)}</div>
     </div>`;
-  }).join('')}`;
+  })()}
+
+  <!-- 이체형 버킷들 -->
+  <div style="font-size:10px;font-weight:700;color:${C.green};margin:10px 0 6px;padding:5px 10px;background:${C.greenbg};border-radius:8px;border:1px solid #B8E8D8;">
+    🔄 이체형 — 이체완료 체크 시 지출이 자동으로 반영돼요
+  </div>
+  ${BUCKETS.filter(b=>b.type==='transfer').map(b=>distRow(b,m,canEdit)).join('')}
+
+  <!-- 예산형 버킷들 -->
+  <div style="font-size:10px;font-weight:700;color:${C.blue};margin:10px 0 6px;padding:5px 10px;background:${C.bluebg};border-radius:8px;border:1px solid #C8DDEF;">
+    💳 예산형 — 이체 후 지출탭에서 실제 사용 내역을 입력하세요
+  </div>
+  ${BUCKETS.filter(b=>b.type==='budget').map(b=>distRow(b,m,canEdit)).join('')}
+
+  <!-- 적립형 버킷들 -->
+  <div style="font-size:10px;font-weight:700;color:${C.gold};margin:10px 0 6px;padding:5px 10px;background:${C.goldbg};border-radius:8px;border:1px solid #F0D090;">
+    🏦 적립형 — 이체 후 별도 통장에 보관, 꺼낼 때만 지출탭 입력
+  </div>
+  ${BUCKETS.filter(b=>b.type==='save').map(b=>distRow(b,m,canEdit)).join('')}
+  `;
 }
 
-// ── 지출 ──
+function distRow(b,m,canEdit){
+  const plan=bTgt(b.id),done=isDist(b.id);
+  const actual=bAct(b.id,m);
+  // transfer: 이체완료면 계획금액 = 지출금액
+  const displayed=b.type==='transfer'?(done?plan:actual):(b.type==='budget'?actual:actual);
+  return`<div class="${done?'dist-row dist-done':'dist-row'}">
+    <div style="display:flex;align-items:flex-start;gap:10px;flex:1;min-width:0;">
+      <div style="font-size:22px;margin-top:1px;">${b.icon}</div>
+      <div style="flex:1;min-width:0;">
+        <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:2px;">
+          <span style="font-size:13px;font-weight:700;color:${done?b.color:C.text};">${b.label}</span>
+          ${done?`<span class="tg" style="background:${C.greenbg};color:${C.green};">✅ 이체완료</span>`:''}
+          ${b.type==='transfer'&&done?`<span class="tg" style="background:${C.greenbg};color:${C.green};">지출자동반영</span>`:''}
+          ${b.type==='budget'&&done?`<span class="tg" style="background:${C.bluebg};color:${C.blue};">예산배정완료</span>`:''}
+          ${b.type==='save'&&done?`<span class="tg" style="background:${C.goldbg};color:${C.gold};">적립완료</span>`:''}
+        </div>
+        <div style="font-size:10px;color:var(--text3);margin-bottom:3px;">${b.desc}</div>
+        ${b.type==='transfer'?`<div style="font-size:10px;color:${done?C.green:C.text3};">${done?'✅ 이체완료 → 지출 자동반영됨':'이체 후 완료 버튼을 눌러주세요'}</div>`:''}
+        ${b.type==='budget'?`<div style="font-size:10px;color:${done?C.blue:C.text3};">${done?`실제 사용 ${fmt(actual)} / 예산 ${fmt(plan)}`:'이체 후 완료 버튼 → 지출탭에서 상세입력'}</div>`:''}
+        ${b.type==='save'?`<div style="font-size:10px;color:${done?C.gold:C.text3};">${done?`적립 ${fmt(plan)} 완료`:'이체 후 완료 버튼을 눌러주세요'}</div>`:''}
+        <div style="margin-top:3px;">${b.items.filter(i=>tgt(i.id)>0).map(i=>`<span style="font-size:9px;color:var(--text3);margin-right:8px;">${i.icon} ${i.label}: ${fmt(tgt(i.id))}</span>`).join('')}</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;margin-left:8px;">
+      <div style="font-size:15px;font-weight:800;color:${b.color};">${fmt(plan)}</div>
+      ${canEdit?`<button class="btsm" style="background:${done?'#F0FBF7':b.color};color:${done?C.green:'#fff'};border:1px solid ${done?C.green:b.color};white-space:nowrap;" onclick="toggleDist('${b.id}')">${done?'✓완료':'완료'}</button>`:''}
+    </div>
+  </div>`;
+}
+
+// ── 지출 탭 ──
+// 이체형: 이체완료된 항목 자동표시 (추가입력 불필요)
+// 예산형: 이체완료 후 실지출 상세입력
+// 적립형: 사용할 때만 입력
 function rSpending(){
   const m=vm();
   const isB=APP.who==='B';
-  const myExp=(APP.data.expenses||[]).filter(e=>e.user===APP.who&&e.date?.startsWith(m)).sort((a,b)=>new Date(b.date)-new Date(a.date));
-  const theirExp=(APP.data.expenses||[]).filter(e=>e.user!==APP.who&&e.date?.startsWith(m)).sort((a,b)=>new Date(b.date)-new Date(a.date));
-  const total=myExp.reduce((s,e)=>s+Number(e.amount||0),0);
-  const incTot=(APP.data.incomes||[]).filter(i=>i.user===APP.who&&i.date?.startsWith(m)).reduce((s,i)=>s+Number(i.amount||0),0);
-  const base=isB?mDisp(m):incTot;
   const isCur=m===tMonth();
-  const bGroups=isB?BUCKETS.map(b=>{
-    const ie=myExp.filter(e=>b.items.find(i=>i.id===e.category));
-    return{...b,ie,spent:ie.reduce((s,e)=>s+Number(e.amount||0),0),plan:bTgt(b.id)};
-  }).filter(b=>b.spent>0||b.plan>0):null;
+
+  if(!isB){
+    // A의 지출 (저축/투자)
+    const myExp=(APP.data.expenses||[]).filter(e=>e.user==='A'&&e.date?.startsWith(m)).sort((a,b)=>new Date(b.date)-new Date(a.date));
+    const incA=(APP.data.incomes||[]).filter(i=>i.user==='A'&&i.date?.startsWith(m)).reduce((s,i)=>s+Number(i.amount||0),0);
+    const total=myExp.reduce((s,e)=>s+Number(e.amount||0),0);
+    const theirExp=(APP.data.expenses||[]).filter(e=>e.user==='B'&&e.date?.startsWith(m)).sort((a,b)=>new Date(b.date)-new Date(a.date));
+    return`
+    ${monthTabs()}
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <h2 style="font-size:15px;font-weight:800;">💎 ${nm('A')} 저축/투자</h2>
+      ${isCur?`<button class="btn bta" style="font-size:11px;" onclick="openModal('expense')">+ 추가</button>`:'<span class="ltag">📅 과거</span>'}
+    </div>
+    <div class="g3">
+      <div class="card ca" style="margin-bottom:0;"><div style="font-size:8px;color:#B05070;font-weight:700;margin-bottom:3px;">저축/투자</div><div style="font-size:16px;font-weight:800;color:#B05070;">${fmt(total)}</div></div>
+      <div class="card" style="margin-bottom:0;"><div style="font-size:8px;color:var(--text3);font-weight:600;margin-bottom:3px;">수입 대비</div><div style="font-size:16px;font-weight:800;color:var(--gold);">${incA>0?Math.round(total/incA*100)+'%':'—'}</div></div>
+      <div class="card cgr" style="margin-bottom:0;"><div style="font-size:8px;color:var(--green);font-weight:700;margin-bottom:3px;">미배분</div><div style="font-size:16px;font-weight:800;color:var(--green);">${fmt(incA-total)}</div></div>
+    </div>
+    <div style="height:8px;"></div>
+    <div class="card">
+      <div class="sec">저축/투자 내역</div>
+      ${myExp.length===0?`<div style="text-align:center;padding:16px;color:var(--text3);font-size:12px;">${m.slice(5)}월 내역 없음</div>`:''}
+      ${myExp.map(e=>{const c=CATS_A.find(x=>x.id===e.category)||{icon:'📦',label:'기타',color:C.text3};return`<div class="row">
+        <div style="display:flex;align-items:center;gap:9px;">
+          <div style="width:32px;height:32px;border-radius:9px;background:${c.color}18;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">${c.icon}</div>
+          <div><div style="font-size:12px;font-weight:600;">${c.label}${e.note?' · '+e.note:''}</div><div style="font-size:10px;color:var(--text3);">${e.date}</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:7px;flex-shrink:0;">
+          <span style="font-weight:800;color:${C.a};font-size:13px;">-${fmt(e.amount)}</span>
+          ${isCur?`<button class="btsm" style="background:var(--red-bg);color:var(--red);border:1px solid #FFCCCC;" onclick="delExp(${e.id})">삭제</button>`:''}
+        </div>
+      </div>`;}).join('')}
+    </div>
+    ${theirExp.length>0?`<div class="card" style="opacity:.7;">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;"><div class="sec" style="margin-bottom:0;">${nm('B')} 지출</div><span class="ltag">🔒</span></div>
+      ${theirExp.slice(0,4).map(e=>{const c=ALL_B.find(x=>x.id===e.category)||{icon:'📦',label:'기타',bucketColor:C.text3};return`<div class="row">
+        <div style="display:flex;align-items:center;gap:9px;">
+          <div style="width:32px;height:32px;border-radius:9px;background:${c.bucketColor||C.text3}18;display:flex;align-items:center;justify-content:center;font-size:14px;">${c.icon}</div>
+          <div><div style="font-size:12px;font-weight:600;">${c.label}${e.note?' · '+e.note:''}</div><div style="font-size:10px;color:var(--text3);">${e.date}</div></div>
+        </div>
+        <span style="font-weight:800;color:${C.b};font-size:13px;">-${fmt(e.amount)}</span>
+      </div>`;}).join('')}
+    </div>`:''}`;
+  }
+
+  // ── B의 지출 탭 ──
+  const disp=mDisp(m);
+  const allBExp=(APP.data.expenses||[]).filter(e=>e.user==='B'&&e.date?.startsWith(m)&&!BIZ_BUCKET()?.items.find(i=>i.id===e.category));
+
+  // 각 버킷별 집계
+  const transferBuckets=BUCKETS.filter(b=>b.type==='transfer');
+  const budgetBuckets=BUCKETS.filter(b=>b.type==='budget');
+  const saveBuckets=BUCKETS.filter(b=>b.type==='save');
+
+  // 총 지출 계산 (transfer는 이체완료시 계획금액, budget/save는 실입력)
+  const totalTransfer=transferBuckets.reduce((s,b)=>s+getBucketSpent(b,m),0);
+  const totalBudget=budgetBuckets.reduce((s,b)=>s+getBucketSpent(b,m),0);
+  const totalSaveUsed=saveBuckets.reduce((s,b)=>s+bAct(b.id,m),0);
+  const totalSpent=totalTransfer+totalBudget+totalSaveUsed;
+
+  const theirExpA=(APP.data.expenses||[]).filter(e=>e.user==='A'&&e.date?.startsWith(m)).sort((a,b)=>new Date(b.date)-new Date(a.date));
+
   return`
   ${monthTabs()}
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-    <h2 style="font-size:15px;font-weight:800;">${isB?'🏠':'💎'} ${nm(APP.who)} 지출</h2>
-    ${isCur?`<button class="btn bt${APP.who.toLowerCase()}" style="font-size:11px;" onclick="openModal('expense')">+ 추가</button>`:'<span class="ltag">📅 과거</span>'}
+    <h2 style="font-size:15px;font-weight:800;">🏠 ${nm('B')} 지출 현황</h2>
+    ${isCur?`<button class="btn btb" style="font-size:11px;" onclick="openModal('expense')">+ 지출 입력</button>`:'<span class="ltag">📅 과거</span>'}
   </div>
-  <div class="g3">
-    <div class="card" style="background:#FBECED;margin-bottom:0;"><div style="font-size:8px;color:#DE7071;font-weight:700;margin-bottom:3px;">총 지출</div><div style="font-size:16px;font-weight:800;color#DE7071">${fmt(total)}</div></div>
-    <div class="card" style="margin-bottom:0;"><div style="font-size:8px;color:var(--text3);font-weight:600;margin-bottom:3px;">대비</div><div style="font-size:16px;font-weight:800;color:var(--gold);">${base>0?Math.round(total/base*100)+'%':'—'}</div></div>
-    <div class="card" style="background:#EDF3E6;margin-bottom:0;"><div style="font-size:8px;color:#7BA74E;font-weight:700;margin-bottom:3px;">잔액</div><div style="font-size:16px;font-weight:800;color:#7BA74E;">${fmt(base-total)}</div></div>
+
+  <!-- 총 지출 요약 -->
+  <div class="card cgo">
+    <div style="font-size:11px;font-weight:700;margin-bottom:8px;">💸 이달 지출 요약</div>
+    <div class="g3" style="margin-bottom:8px;">
+      <div class="stat-mini"><div class="lbl2">이체형 지출</div><div class="val" style="color:#7C6AF7;">${fmt(totalTransfer)}</div></div>
+      <div class="stat-mini"><div class="lbl2">생활비 사용</div><div class="val" style="color:${C.blue};">${fmt(totalBudget)}</div></div>
+      <div class="stat-mini" style="background:var(--green-bg);border-color:#B8E8D8;"><div class="lbl2">가처분 잔액</div><div class="val" style="color:var(--green);">${fmt(disp-totalSpent)}</div></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:11px;padding-top:6px;border-top:1px solid var(--border);">
+      <span style="color:var(--text2);">총 지출 합계</span>
+      <span style="font-weight:800;color:${C.red};">${fmt(totalSpent)}</span>
+    </div>
   </div>
-  <div style="height:8px;"></div>
-  ${isB&&bGroups?bGroups.map(b=>{
-    const pct=b.plan>0?Math.min(100,Math.round(b.spent/b.plan*100)):0;
-    const over=b.spent>b.plan&&b.plan>0;
-    const rem=b.plan-b.spent;
-    return`<div class="card"">
+
+  <!-- 이체형: 자동 반영 -->
+  <div class="spend-section-head" style="background:#F0FBF7;border:1px solid #B8E8D8;color:var(--green);">
+    🔄 이체형 지출 <span style="font-size:9px;opacity:.8;font-weight:500;">(이체완료 시 자동반영 — 별도 입력 불필요)</span>
+  </div>
+  ${transferBuckets.map(b=>{
+    const plan=bTgt(b.id),done=isDist(b.id);
+    return`<div class="card" style="border-left:3px solid ${done?b.color:C.border};${!done?'opacity:.6;':''}">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:18px;">${b.icon}</span>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:${b.color};">${b.label}</div>
+            <div style="font-size:10px;color:var(--text3);">${b.desc}</div>
+            <div style="font-size:10px;margin-top:2px;color:${done?C.green:C.text3};">${done?'✅ 이체완료 → 자동반영':'○ 분배탭에서 이체완료 체크 필요'}</div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:15px;font-weight:800;color:${done?b.color:C.text3};">${fmt(done?plan:0)}</div>
+          ${plan>0?`<div style="font-size:9px;color:var(--text3);">계획 ${fmt(plan)}</div>`:''}
+        </div>
+      </div>
+      ${done?`<div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:5px;">${b.items.filter(i=>tgt(i.id)>0).map(i=>`<span style="padding:2px 8px;border-radius:5px;background:${b.color}18;font-size:9px;color:${b.color};font-weight:700;">${i.icon} ${i.label} ${fmt(tgt(i.id))}</span>`).join('')}</div>`:''}
+    </div>`;
+  }).join('')}
+
+  <!-- 예산형: 실지출 상세 -->
+  <div class="spend-section-head" style="background:var(--blue-bg);border:1px solid #C8DDEF;color:${C.blue};">
+    💳 생활비 상세 지출 <span style="font-size:9px;opacity:.8;font-weight:500;">(+ 지출 입력 버튼으로 항목별 입력)</span>
+  </div>
+  ${budgetBuckets.map(b=>{
+    const plan=bTgt(b.id),done=isDist(b.id);
+    const ie=(APP.data.expenses||[]).filter(e=>e.user==='B'&&e.date?.startsWith(m)&&b.items.find(i=>i.id===e.category));
+    const spent=ie.reduce((s,e)=>s+Number(e.amount||0),0);
+    const pct=plan>0?Math.min(100,Math.round(spent/plan*100)):0;
+    const over=spent>plan&&plan>0;
+    return`<div class="card" style="border-left:3px solid ${b.color};">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
         <div style="display:flex;align-items:center;gap:7px;">
           <span style="font-size:18px;">${b.icon}</span>
           <div>
             <div style="font-size:12px;font-weight:700;color:${b.color};">${b.label}</div>
             <div style="display:flex;gap:4px;margin-top:2px;">
-              ${isDist(b.id)?`<span class="tg" style="background:${C.greenbg};color:${C.green};">✅ 이체완료</span>`:''}
-              ${over?`<span class="tg" style="background:${C.bbg};color:${C.b};">초과</span>`:''}
+              ${done?`<span class="tg" style="background:${C.greenbg};color:${C.green};">✅ 예산배정</span>`:'<span class="tg" style="background:#F5F5F5;color:var(--text3);">분배 대기</span>'}
+              ${over?`<span class="tg" style="background:${C.redbg};color:${C.red};">예산초과</span>`:''}
             </div>
           </div>
         </div>
         <div style="text-align:right;">
-          <div style="font-size:14px;font-weight:800;color:${over?C.b:b.color};">${fmt(b.spent)}</div>
-          ${b.plan>0?`<div style="font-size:9px;color:var(--text3);">/ ${fmt(b.plan)} (${pct}%)</div>`:''}
+          <div style="font-size:14px;font-weight:800;color:${over?C.red:b.color};">${fmt(spent)}</div>
+          ${plan>0?`<div style="font-size:9px;color:var(--text3);">/ ${fmt(plan)} (${pct}%)</div>`:''}
         </div>
       </div>
-      ${b.plan>0?`<div class="pw" style="height:6px;margin-bottom:6px;"><div class="pf" style="width:${pct}%;background:${over?C.b:b.color};"></div></div>
+      ${plan>0?`<div class="pw" style="height:6px;margin-bottom:6px;"><div class="pf" style="width:${pct}%;background:${over?C.red:b.color};"></div></div>
       <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:8px;">
-        <span style="color:var(--text3);">사용 ${fmt(b.spent)}</span>
-        <span style="color:${rem>=0?C.green:C.b};font-weight:700;">잔액 ${fmt(rem)}</span>
+        <span style="color:var(--text3);">사용 ${fmt(spent)}</span>
+        <span style="color:${plan-spent>=0?C.green:C.red};font-weight:700;">잔액 ${fmt(plan-spent)}</span>
       </div>`:''}
-      ${b.ie.length>0?`<div class="bucket-detail">
+      ${ie.length>0?`<div class="bucket-detail">
         <div style="font-size:9px;font-weight:700;color:var(--text3);margin-bottom:6px;">상세 내역</div>
-        ${b.ie.map(e=>{
-          const ci=ALL_B.find(x=>x.id===e.category)||{icon:'📦',label:'기타'};
-          return`<div class="btx-row">
-            <div style="display:flex;align-items:center;gap:6px;">
-              <span style="font-size:12px;">${ci.icon}</span>
-              <div><div style="font-size:11px;font-weight:600;">${ci.label}${e.note?' · '+e.note:''}</div>
-              <div style="font-size:9px;color:var(--text3);">${e.date}</div></div>
+        ${ie.map(e=>{const ci=ALL_B.find(x=>x.id===e.category)||{icon:'📦',label:'기타'};return`<div class="btx-row">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span style="font-size:12px;">${ci.icon}</span>
+            <div><div style="font-size:11px;font-weight:600;">${ci.label}${e.note?' · '+e.note:''}</div>
+            <div style="font-size:9px;color:var(--text3);">${e.date}</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+            <span style="font-size:12px;font-weight:700;color:${b.color};">-${fmt(e.amount)}</span>
+            ${isCur?`<button class="btsm" style="background:var(--red-bg);color:var(--red);border:1px solid #FFCCCC;" onclick="delExp(${e.id})">삭제</button>`:''}
+          </div>
+        </div>`;}).join('')}
+      </div>`:'<div style="font-size:10px;color:var(--text3);text-align:center;padding:8px 0;">지출 내역 없음 — + 버튼으로 추가</div>'}
+    </div>`;
+  }).join('')}
+
+  <!-- 적립형: 출금한 것만 -->
+  <div class="spend-section-head" style="background:${C.goldbg};border:1px solid #F0D090;color:${C.gold};">
+    🏦 적립형 통장 사용 내역 <span style="font-size:9px;opacity:.8;font-weight:500;">(꺼낼 때만 + 지출 입력)</span>
+  </div>
+  ${saveBuckets.map(b=>{
+    const plan=bTgt(b.id),done=isDist(b.id);
+    const ie=(APP.data.expenses||[]).filter(e=>e.user==='B'&&e.date?.startsWith(m)&&b.items.find(i=>i.id===e.category));
+    const used=ie.reduce((s,e)=>s+Number(e.amount||0),0);
+    return`<div class="card" style="border-left:3px solid ${b.color};">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:${ie.length>0?'8px':'0'};">
+        <div style="display:flex;align-items:center;gap:7px;">
+          <span style="font-size:18px;">${b.icon}</span>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:${b.color};">${b.label}</div>
+            <div style="display:flex;gap:4px;margin-top:2px;">
+              ${done?`<span class="tg" style="background:${C.goldbg};color:${C.gold};">적립 ${fmt(plan)}</span>`:'<span class="tg" style="background:#F5F5F5;color:var(--text3);">미적립</span>'}
+              ${used>0?`<span class="tg" style="background:${C.redbg};color:${C.red};">사용 ${fmt(used)}</span>`:''}
             </div>
-            <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-              <span style="font-size:12px;font-weight:700;color:${b.color};">-${fmt(e.amount)}</span>
-              ${isCur?`<button class="btsm" style="background:var(--b-bg);color:var(--b);border:1px solid #FFCCCC;" onclick="delExp(${e.id})">삭제</button>`:''}
-            </div>
-          </div>`;
-        }).join('')}
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:14px;font-weight:800;color:${b.color};">${fmt(plan)}</div>
+          <div style="font-size:9px;color:var(--text3);">이달 적립 계획</div>
+        </div>
+      </div>
+      ${ie.length>0?`<div class="bucket-detail">
+        ${ie.map(e=>{const ci=ALL_B.find(x=>x.id===e.category)||{icon:'📦',label:'기타'};return`<div class="btx-row">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span style="font-size:12px;">${ci.icon}</span>
+            <div><div style="font-size:11px;font-weight:600;">${ci.label}${e.note?' · '+e.note:''}</div>
+            <div style="font-size:9px;color:var(--text3);">${e.date}</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+            <span style="font-size:12px;font-weight:700;color:${C.red};">-${fmt(e.amount)}</span>
+            ${isCur?`<button class="btsm" style="background:var(--red-bg);color:var(--red);border:1px solid #FFCCCC;" onclick="delExp(${e.id})">삭제</button>`:''}
+          </div>
+        </div>`;}).join('')}
       </div>`:''}
     </div>`;
-  }).join(''):''}
-  ${!isB?`<div class="card">
-    <div class="sec">저축/투자 내역</div>
-    ${myExp.length===0?`<div style="text-align:center;padding:16px;color:var(--text3);font-size:12px;">${m.slice(5)}월 내역 없음</div>`:''}
-    ${myExp.map(e=>{const c=CATS_A.find(x=>x.id===e.category)||{icon:'📦',label:'기타',color:C.text3};return`<div class="row">
+  }).join('')}
+
+  ${theirExpA.length>0?`<div class="card" style="opacity:.7;margin-top:4px;">
+    <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;"><div class="sec" style="margin-bottom:0;">${nm('A')} 저축/투자</div><span class="ltag">🔒</span></div>
+    ${theirExpA.slice(0,4).map(e=>{const c=CATS_A.find(x=>x.id===e.category)||{icon:'📦',label:'기타',color:C.text3};return`<div class="row">
       <div style="display:flex;align-items:center;gap:9px;">
-        <div style="width:32px;height:32px;border-radius:9px;background:${c.color}18;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">${c.icon}</div>
+        <div style="width:32px;height:32px;border-radius:9px;background:${c.color}18;display:flex;align-items:center;justify-content:center;font-size:14px;">${c.icon}</div>
         <div><div style="font-size:12px;font-weight:600;">${c.label}${e.note?' · '+e.note:''}</div><div style="font-size:10px;color:var(--text3);">${e.date}</div></div>
       </div>
-      <div style="display:flex;align-items:center;gap:7px;flex-shrink:0;">
-        <span style="font-weight:800;color:var(--a);font-size:13px;">-${fmt(e.amount)}</span>
-        ${isCur?`<button class="btsm" style="background:var(--b-bg);color:var(--b);border:1px solid #FFCCCC;" onclick="delExp(${e.id})">삭제</button>`:''}
-      </div>
-    </div>`;}).join('')}
-  </div>`:''}
-  ${theirExp.length>0?`<div class="card" style="opacity:.7;">
-    <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;"><div class="sec" style="margin-bottom:0;">${nm(APP.who==='A'?'B':'A')} 지출</div><span class="ltag">🔒</span></div>
-    ${theirExp.slice(0,5).map(e=>{const allC=[...ALL_B,...CATS_A];const c=allC.find(x=>x.id===e.category)||{icon:'📦',label:'기타',color:C.text3};return`<div class="row">
-      <div style="display:flex;align-items:center;gap:9px;">
-        <div style="width:32px;height:32px;border-radius:9px;background:${(c.bucketColor||c.color||C.text3)}18;display:flex;align-items:center;justify-content:center;font-size:14px;">${c.icon}</div>
-        <div><div style="font-size:12px;font-weight:600;">${c.label}${e.note?' · '+e.note:''}</div><div style="font-size:10px;color:var(--text3);">${e.date}</div></div>
-      </div>
-      <span style="font-weight:800;color:${APP.who==='A'?C.b:C.a};font-size:13px;">-${fmt(e.amount)}</span>
+      <span style="font-weight:800;color:${C.a};font-size:13px;">-${fmt(e.amount)}</span>
     </div>`;}).join('')}
   </div>`:''}`;
 }
 
 // ── 통계 ──
 function rStats(){
-  const year=APP.viewYear;
-  const years=getYears();
+  const year=APP.viewYear,years=getYears();
   const mos=['01','02','03','04','05','06','07','08','09','10','11','12'];
   const md=mos.map(mo=>{
     const ym=`${year}-${mo}`;
     const ib=mInc(ym),biz=mBiz(ym),disp=mDisp(ym);
-    const sb=(APP.data.expenses||[]).filter(e=>e.user==='B'&&e.date?.startsWith(ym)).reduce((s,e)=>s+Number(e.amount||0),0);
+    const sb=(APP.data.expenses||[]).filter(e=>e.user==='B'&&e.date?.startsWith(ym)&&!BIZ_BUCKET()?.items.find(i=>i.id===e.category)).reduce((s,e)=>s+Number(e.amount||0),0);
+    // transfer형 이체완료 포함
+    const sbTransfer=BUCKETS.filter(b=>b.type==='transfer').reduce((s,b)=>{
+      const done=!!(APP.data.settings.distributed||{})[ym+'_'+b.id];
+      return s+(done?bTgt(b.id):0);
+    },0);
     const ia=(APP.data.incomes||[]).filter(i=>i.user==='A'&&i.date?.startsWith(ym)).reduce((s,i)=>s+Number(i.amount||0),0);
-    const sa=(APP.data.expenses||[]).filter(e=>e.user==='A'&&e.date?.startsWith(ym)).reduce((s,e)=>s+Number(e.amount||0),0);
-    return{ym,mo:Number(mo),ib,biz,disp,sb,ia,sa,save:disp-sb};
+    return{ym,mo:Number(mo),ib,biz,disp,sb:sb+sbTransfer,ia,save:disp-(sb+sbTransfer)};
   });
   const hasData=md.some(d=>d.ib>0||d.ia>0);
-  const yTIB=md.reduce((s,d)=>s+d.ib,0);
-  const yTIA=md.reduce((s,d)=>s+d.ia,0);
-  const yTSB=md.reduce((s,d)=>s+d.sb,0);
-  const yTBiz=md.reduce((s,d)=>s+d.biz,0);
+  const yTIB=md.reduce((s,d)=>s+d.ib,0),yTIA=md.reduce((s,d)=>s+d.ia,0);
+  const yTSB=md.reduce((s,d)=>s+d.sb,0),yTBiz=md.reduce((s,d)=>s+d.biz,0);
   const avgB=hasData?Math.round(yTIB/(md.filter(d=>d.ib>0).length||1)):0;
   const catSpend={};
-  (APP.data.expenses||[]).filter(e=>e.user==='B'&&e.date?.startsWith(year)).forEach(e=>{catSpend[e.category]=(catSpend[e.category]||0)+Number(e.amount||0);});
+  (APP.data.expenses||[]).filter(e=>e.user==='B'&&e.date?.startsWith(year)&&!BIZ_BUCKET()?.items.find(i=>i.id===e.category)).forEach(e=>{catSpend[e.category]=(catSpend[e.category]||0)+Number(e.amount||0);});
   return`
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
     <h2 style="font-size:15px;font-weight:800;">📈 통계</h2>
@@ -628,64 +859,49 @@ function rStats(){
   <div class="card cgo">
     <div style="font-size:11px;font-weight:700;margin-bottom:10px;">${year}년 연간 요약</div>
     <div class="g2" style="margin-bottom:6px;">
-      <div class="stat-mini"><div class="lbl2">B 연 수입</div><div class="val" style="color:var(--b);">${fmtS(yTIB)}</div></div>
-      <div class="stat-mini"><div class="lbl2">A 저축/투자</div><div class="val" style="color:var(--a);">${fmtS(yTIA)}</div></div>
-      <div class="stat-mini"><div class="lbl2">연 사업비</div><div class="val" style="color:var(--b);">${fmtS(yTBiz)}</div></div>
+      <div class="stat-mini"><div class="lbl2">B 연 수입</div><div class="val" style="color:#2E6EA0;">${fmtS(yTIB)}</div></div>
+      <div class="stat-mini"><div class="lbl2">A 저축/투자</div><div class="val" style="color:#B05070;">${fmtS(yTIA)}</div></div>
+      <div class="stat-mini"><div class="lbl2">연 사업비</div><div class="val" style="color:${C.red};">${fmtS(yTBiz)}</div></div>
       <div class="stat-mini" style="background:var(--green-bg);border-color:#B8E8D8;"><div class="lbl2">B 연 생활비</div><div class="val" style="color:var(--green);">${fmtS(yTSB)}</div></div>
     </div>
-    <div style="font-size:10px;color:var(--text2);padding-top:6px;border-top:1px solid var(--border);">B 월평균 수입 <b style="color:var(--b);">${fmt(avgB)}</b></div>
+    <div style="font-size:10px;color:var(--text2);padding-top:6px;border-top:1px solid var(--border);">B 월평균 수입 <b style="color:#2E6EA0;">${fmt(avgB)}</b></div>
   </div>
-  <div class="card">
-    <div style="font-size:11px;font-weight:700;margin-bottom:8px;">📅 월별 수입</div>
-    <div class="chart-wrap"><canvas id="ch-inc" height="150"></canvas></div>
-  </div>
-  <div class="card">
-    <div style="font-size:11px;font-weight:700;margin-bottom:8px;">💸 가처분 vs 지출</div>
-    <div class="chart-wrap"><canvas id="ch-exp" height="150"></canvas></div>
-  </div>
-  ${Object.keys(catSpend).length>0?`<div class="card">
-    <div style="font-size:11px;font-weight:700;margin-bottom:8px;">🏷️ 카테고리별 지출 (B)</div>
-    <div class="chart-wrap"><canvas id="ch-cat" height="190"></canvas></div>
-  </div>`:''}
+  <div class="card"><div style="font-size:11px;font-weight:700;margin-bottom:8px;">📅 월별 수입</div><div class="chart-wrap"><canvas id="ch-inc" height="150"></canvas></div></div>
+  <div class="card"><div style="font-size:11px;font-weight:700;margin-bottom:8px;">💸 가처분 vs 지출</div><div class="chart-wrap"><canvas id="ch-exp" height="150"></canvas></div></div>
+  ${Object.keys(catSpend).length>0?`<div class="card"><div style="font-size:11px;font-weight:700;margin-bottom:8px;">🏷️ 카테고리별 지출</div><div class="chart-wrap"><canvas id="ch-cat" height="190"></canvas></div></div>`:''}
   <div class="card">
     <div style="font-size:11px;font-weight:700;margin-bottom:10px;">월별 상세</div>
-    ${md.filter(d=>d.ib>0).map(d=>{
-      const max=Math.max(...md.map(x=>x.ib),1);
-      return`<div class="year-bar">
-        <div class="year-bar-label">${d.mo}월</div>
-        <div style="flex:1;">
-          <div class="year-bar-track"><div class="year-bar-fill" style="width:${Math.round(d.ib/max*100)}%;background:${C.b};"></div></div>
-          <div style="font-size:8px;color:var(--text3);margin-top:1px;">지출 ${fmtS(d.sb)} · 절약 <span style="color:${d.save>=0?C.green:C.b};">${fmtS(d.save)}</span></div>
-        </div>
-        <div class="year-bar-val" style="color:var(--b);">${fmtS(d.ib)}</div>
-      </div>`;
-    }).join('')||`<div style="text-align:center;padding:12px;color:var(--text3);font-size:11px;">데이터 없음</div>`}
-  </div>
-  `}`;
+    ${md.filter(d=>d.ib>0).map(d=>{const max=Math.max(...md.map(x=>x.ib),1);return`<div class="year-bar">
+      <div class="year-bar-label">${d.mo}월</div>
+      <div style="flex:1;"><div class="year-bar-track"><div class="year-bar-fill" style="width:${Math.round(d.ib/max*100)}%;background:#6AACD5;"></div></div>
+      <div style="font-size:8px;color:var(--text3);margin-top:1px;">지출 ${fmtS(d.sb)} · 절약 <span style="color:${d.save>=0?C.green:C.red};">${fmtS(d.save)}</span></div></div>
+      <div class="year-bar-val" style="color:#2E6EA0;">${fmtS(d.ib)}</div>
+    </div>`;}).join('')||`<div style="text-align:center;padding:12px;color:var(--text3);font-size:11px;">데이터 없음</div>`}
+  </div>`}`;
 }
-
 function drawCharts(){
   if(APP.tab!=='stats')return;
-  const year=APP.viewYear;
-  const mos=['01','02','03','04','05','06','07','08','09','10','11','12'];
+  const year=APP.viewYear,mos=['01','02','03','04','05','06','07','08','09','10','11','12'];
   const labels=mos.map(m=>m+'월');
   const md=mos.map(mo=>{
     const ym=`${year}-${mo}`;
-    return{ib:mInc(ym),disp:mDisp(ym),sb:(APP.data.expenses||[]).filter(e=>e.user==='B'&&e.date?.startsWith(ym)).reduce((s,e)=>s+Number(e.amount||0),0),ia:(APP.data.incomes||[]).filter(i=>i.user==='A'&&i.date?.startsWith(ym)).reduce((s,i)=>s+Number(i.amount||0),0)};
+    const disp=mDisp(ym);
+    const sb=(APP.data.expenses||[]).filter(e=>e.user==='B'&&e.date?.startsWith(ym)&&!BIZ_BUCKET()?.items.find(i=>i.id===e.category)).reduce((s,e)=>s+Number(e.amount||0),0);
+    const sbT=BUCKETS.filter(b=>b.type==='transfer').reduce((s,b)=>{const done=!!(APP.data.settings.distributed||{})[ym+'_'+b.id];return s+(done?bTgt(b.id):0);},0);
+    return{ib:mInc(ym),disp,sb:sb+sbT,ia:(APP.data.incomes||[]).filter(i=>i.user==='A'&&i.date?.startsWith(ym)).reduce((s,i)=>s+Number(i.amount||0),0)};
   });
   const catSpend={};
-  (APP.data.expenses||[]).filter(e=>e.user==='B'&&e.date?.startsWith(year)).forEach(e=>{catSpend[e.category]=(catSpend[e.category]||0)+Number(e.amount||0);});
+  (APP.data.expenses||[]).filter(e=>e.user==='B'&&e.date?.startsWith(year)&&!BIZ_BUCKET()?.items.find(i=>i.id===e.category)).forEach(e=>{catSpend[e.category]=(catSpend[e.category]||0)+Number(e.amount||0);});
   const opts={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{size:10},color:'#5A5A7A'},position:'bottom'},tooltip:{callbacks:{label:c=>' '+fmt(c.raw)}}},scales:{x:{ticks:{font:{size:9},color:'#9A9AB0'},grid:{display:false}},y:{ticks:{font:{size:9},color:'#9A9AB0',callback:v=>fmtS(v)},grid:{color:'#E8E8F0'}}}};
   const e1=document.getElementById('ch-inc');
-  if(e1)chartInst.inc=new Chart(e1,{type:'bar',data:{labels,datasets:[{label:'B 수입',data:md.map(d=>d.ib),backgroundColor:C.b+'44',borderColor:C.b,borderWidth:2,borderRadius:4},{label:'A 저축',data:md.map(d=>d.ia),backgroundColor:C.a+'44',borderColor:C.a,borderWidth:2,borderRadius:4}]},options:opts});
+  if(e1)chartInst.inc=new Chart(e1,{type:'bar',data:{labels,datasets:[{label:'B 수입',data:md.map(d=>d.ib),backgroundColor:'#6AACD544',borderColor:'#6AACD5',borderWidth:2,borderRadius:4},{label:'A 저축',data:md.map(d=>d.ia),backgroundColor:'#E6819A44',borderColor:'#E6819A',borderWidth:2,borderRadius:4}]},options:opts});
   const e2=document.getElementById('ch-exp');
-  if(e2)chartInst.exp=new Chart(e2,{type:'line',data:{labels,datasets:[{label:'가처분',data:md.map(d=>d.disp),borderColor:C.green,backgroundColor:C.green+'22',fill:true,tension:.3,pointRadius:3,borderWidth:2},{label:'지출',data:md.map(d=>d.sb),borderColor:C.b,backgroundColor:C.b+'22',fill:true,tension:.3,pointRadius:3,borderWidth:2}]},options:opts});
+  if(e2)chartInst.exp=new Chart(e2,{type:'line',data:{labels,datasets:[{label:'가처분',data:md.map(d=>d.disp),borderColor:C.green,backgroundColor:C.green+'22',fill:true,tension:.3,pointRadius:3,borderWidth:2},{label:'지출',data:md.map(d=>d.sb),borderColor:C.red,backgroundColor:C.red+'22',fill:true,tension:.3,pointRadius:3,borderWidth:2}]},options:opts});
   const e3=document.getElementById('ch-cat');
   if(e3&&Object.keys(catSpend).length){
     const sorted=Object.entries(catSpend).sort((a,b)=>b[1]-a[1]).slice(0,8);
     const allC=[...ALL_B,...CATS_A];
-    const bgs=[C.b,C.a,C.gold,C.green,C.blue,'#8B5CF6','#EC4899','#059669'];
-    chartInst.cat=new Chart(e3,{type:'doughnut',data:{labels:sorted.map(([id])=>allC.find(c=>c.id===id)?.label||id),datasets:[{data:sorted.map(([,v])=>v),backgroundColor:bgs,borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{size:9},color:'#5A5A7A',boxWidth:12}},tooltip:{callbacks:{label:c=>' '+fmt(c.raw)}}}}});
+    chartInst.cat=new Chart(e3,{type:'doughnut',data:{labels:sorted.map(([id])=>allC.find(c=>c.id===id)?.label||id),datasets:[{data:sorted.map(([,v])=>v),backgroundColor:['#6AACD5','#E6819A',C.gold,C.green,C.blue,'#8B5CF6','#EC4899','#059669'],borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{size:9},color:'#5A5A7A',boxWidth:12}},tooltip:{callbacks:{label:c=>' '+fmt(c.raw)}}}}});
   }
 }
 
@@ -711,7 +927,7 @@ function rGoals(){
     return`<div class="card">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
         <div><div style="font-size:14px;font-weight:800;">${g.title}</div>${g.deadline?`<div style="font-size:10px;color:var(--text3);margin-top:2px;">📅 ${g.deadline}</div>`:''}</div>
-        ${mine?`<button class="btsm" style="background:var(--b-bg);color:var(--b);border:1px solid #FFCCCC;" onclick="delGoal(${g.id})">삭제</button>`:''}
+        ${mine?`<button class="btsm" style="background:var(--red-bg);color:var(--red);border:1px solid #FFCCCC;" onclick="delGoal(${g.id})">삭제</button>`:''}
       </div>
       <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:10px;color:var(--text2);">달성률</span><span style="font-size:12px;font-weight:800;color:${g.color};">${pct}%</span></div>
       <div class="pw" style="height:8px;margin-bottom:10px;"><div class="pf" style="width:${pct}%;background:${g.color};"></div></div>
@@ -743,13 +959,18 @@ function getModal(){
     <div style="margin-bottom:8px;"><label class="lbl">월 평균 수입</label><input class="inp" type="number" id="s-avg" inputmode="numeric" value="${ss.avgIncomeB||''}"></div>
     <div style="margin-bottom:8px;"><label class="lbl">📉 최소 마지노선</label><input class="inp" type="number" id="s-min" inputmode="numeric" value="${ss.minIncomeB||''}"></div>
     <div style="margin-bottom:12px;"><label class="lbl">📈 최대 마지노선 (초과→비상금)</label><input class="inp" type="number" id="s-max" inputmode="numeric" value="${ss.maxIncomeB||''}"></div>
-    <div class="sh">분배 계획 금액</div>
-    ${BUCKETS.map(b=>`<div style="font-size:10px;font-weight:700;color:${b.color};margin:8px 0 5px;padding:5px 8px;background:${b.color}12;border-radius:7px;">${b.icon} ${b.label}</div>${b.items.map(i=>`<div style="margin-bottom:7px;"><label class="lbl">${i.icon} ${i.label}</label><input class="inp" type="number" inputmode="numeric" placeholder="0" id="bt-${i.id}" value="${tgt(i.id)||''}"></div>`).join('')}`).join('')}
-    <div style="display:flex;gap:8px;margin-top:14px;padding-bottom:10px;">
+    <div class="sh">분배 계획 금액 (월 25일 기준)</div>
+    ${BUCKETS.map(b=>`<div style="font-size:10px;font-weight:700;color:${b.color};margin:8px 0 5px;padding:5px 8px;background:${b.color}12;border-radius:7px;">${b.icon} ${b.label} <span style="font-weight:400;opacity:.7;">(${b.type==='transfer'?'이체형':b.type==='budget'?'예산형':b.type==='save'?'적립형':'변동사업비'})</span></div>${b.items.map(i=>`<div style="margin-bottom:7px;"><label class="lbl">${i.icon} ${i.label}</label><input class="inp" type="number" inputmode="numeric" placeholder="0" id="bt-${i.id}" value="${tgt(i.id)||''}"></div>`).join('')}`).join('')}
+    <div style="display:flex;gap:8px;margin-top:14px;padding-bottom:4px;">
       <button class="btn bta" style="flex:1;padding:13px;" onclick="saveSettings()">저장</button>
       <button class="btn btg" style="flex:1;padding:13px;" onclick="closeModal()">취소</button>
     </div>
+    <div style="border-top:1px solid var(--border);margin-top:14px;padding-top:14px;padding-bottom:10px;">
+      <div style="font-size:10px;color:var(--text3);margin-bottom:8px;text-align:center;">⚠️ 위험 구역 — 되돌릴 수 없어요</div>
+      <button class="btn" style="width:100%;padding:11px;background:#FFF0F0;color:var(--red);border:1.5px solid #FFCCCC;font-size:12px;" onclick="confirmReset()">🗑️ 전체 데이터 초기화 (테스트 데이터 삭제용)</button>
+    </div>
   </div>`;
+
   if(m==='income') return`<div class="mbox">
     <div class="mhandle"></div>
     <div style="font-size:15px;font-weight:800;margin-bottom:14px;">💰 ${nm(APP.who)} 수입 추가</div>
@@ -763,32 +984,42 @@ function getModal(){
       <button class="btn btg" style="flex:1;padding:13px;" onclick="closeModal()">취소</button>
     </div>
   </div>`;
+
   if(m==='biz_expense') return`<div class="mbox">
     <div class="mhandle"></div>
-    <div style="font-size:15px;font-weight:800;margin-bottom:4px;">🏭 사업비 입력</div>
+    <div style="font-size:15px;font-weight:800;margin-bottom:4px;">⚗️ 재료비/소모품 입력</div>
     <div style="font-size:11px;color:var(--text2);margin-bottom:12px;">수입에서 먼저 차감되는 사업 비용</div>
     <div style="margin-bottom:10px;"><label class="lbl">항목</label>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;">
-        ${BUCKETS[0].items.map(i=>`<button class="cat-btn" style="${f.category===i.id?`background:${C.b}18;border-color:${C.b};color:${C.b};font-weight:700;`:''}" onclick="setF('category','${i.id}')">${i.icon}<br><span style="font-size:9px;">${i.label}</span></button>`).join('')}
+        ${BIZ_BUCKET()?.items.map(i=>`<button class="cat-btn" style="${f.category===i.id?`background:${C.red}18;border-color:${C.red};color:${C.red};font-weight:700;`:''}" onclick="setF('category','${i.id}')">${i.icon}<br><span style="font-size:9px;">${i.label}</span></button>`).join('')}
       </div>
     </div>
     <div style="margin-bottom:10px;"><label class="lbl">금액</label><input class="inp" type="number" placeholder="500,000" id="f-amt" inputmode="numeric"></div>
     <div style="margin-bottom:10px;"><label class="lbl">날짜</label><input class="inp" type="date" id="f-date" value="${tod()}"></div>
     <div style="margin-bottom:14px;"><label class="lbl">메모</label><input class="inp" placeholder="은 30g, 택배 10건 등" id="f-note"></div>
     <div style="display:flex;gap:8px;padding-bottom:10px;">
-      <button class="btn btb" style="flex:1;padding:13px;" onclick="submitBiz()">저장</button>
+      <button class="btn" style="flex:1;padding:13px;background:${C.red};color:#fff;" onclick="submitBiz()">저장</button>
       <button class="btn btg" style="flex:1;padding:13px;" onclick="closeModal()">취소</button>
     </div>
   </div>`;
+
   if(m==='expense'){
     const isB=APP.who==='B';
+    // B의 지출 입력: 예산형(budget) + 적립형(save) 항목만 노출
+    // 이체형(transfer)은 이체완료로 자동처리되므로 제외
+    const availBuckets=isB?BUCKETS.filter(b=>b.type==='budget'||b.type==='save'):null;
     return`<div class="mbox">
       <div class="mhandle"></div>
       <div style="font-size:15px;font-weight:800;margin-bottom:8px;">${isB?'🏠':'💎'} 지출 입력</div>
-      ${isB?`<div class="info-box">💡 재료비·사업비는 분배탭에서 입력</div>`:''}
+      ${isB?`<div class="info-box">💡 주거고정비·보험·용돈은 분배탭 이체완료로 자동반영<br>아래는 실제 사용하는 생활비·적립 사용분만 입력하세요</div>`:''}
       <div style="margin-bottom:10px;"><label class="lbl">카테고리</label>
-        ${isB?BUCKETS.filter(b=>b.id!=='biz').map(b=>`<div style="font-size:10px;font-weight:700;color:${b.color};margin:8px 0 4px;padding:4px 8px;background:${b.color}12;border-radius:6px;">${b.icon} ${b.label}</div>
-          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:4px;margin-bottom:4px;">${b.items.map(i=>`<button class="cat-btn" style="${f.category===i.id?`background:${b.color}18;border-color:${b.color};color:${b.color};font-weight:700;`:''}" onclick="setF('category','${i.id}')">${i.icon} ${i.label}</button>`).join('')}</div>`).join(''):
+        ${availBuckets?availBuckets.map(b=>`
+          <div style="font-size:10px;font-weight:700;color:${b.color};margin:8px 0 4px;padding:4px 8px;background:${b.color}12;border-radius:6px;">
+            ${b.icon} ${b.label} <span style="font-weight:400;opacity:.7;">(${b.type==='budget'?'생활비 상세':'적립 사용시'})</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:4px;margin-bottom:4px;">
+            ${b.items.map(i=>`<button class="cat-btn" style="${f.category===i.id?`background:${b.color}18;border-color:${b.color};color:${b.color};font-weight:700;`:''}" onclick="setF('category','${i.id}')">${i.icon} ${i.label}</button>`).join('')}
+          </div>`).join(''):
           `<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:4px;">${CATS_A.map(c=>`<button class="cat-btn" style="${f.category===c.id?`background:${c.color}18;border-color:${c.color};color:${c.color};font-weight:700;`:''}" onclick="setF('category','${c.id}')">${c.icon} ${c.label}</button>`).join('')}</div>`}
       </div>
       <div style="margin-bottom:10px;"><label class="lbl">금액</label><input class="inp" type="number" placeholder="50,000" id="f-amt" inputmode="numeric"></div>
@@ -800,7 +1031,29 @@ function getModal(){
       </div>
     </div>`;
   }
-  if(m==='goal') return`<div class="mbox">
+
+  if(m==='confirm_reset') return`<div class="mbox">
+    <div class="mhandle"></div>
+    <div style="text-align:center;padding:10px 0 6px;">
+      <div style="font-size:40px;margin-bottom:12px;">🗑️</div>
+      <div style="font-size:16px;font-weight:800;margin-bottom:8px;color:var(--red);">전체 데이터 초기화</div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:6px;">
+        수입, 지출, 목표, 분배완료 기록이<br>
+        <b style="color:var(--red);">모두 삭제</b>됩니다.
+      </div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:20px;">설정값(이름, 목표금액, 분배계획)은 유지돼요</div>
+      <div style="background:#FFF0F0;border-radius:10px;padding:12px;border:1px solid #FFCCCC;margin-bottom:20px;">
+        <div style="font-size:11px;color:var(--red);font-weight:600;">정말 삭제하시겠어요?</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:3px;">이 작업은 되돌릴 수 없어요</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;padding-bottom:10px;">
+      <button class="btn" style="flex:1;padding:13px;background:var(--red);color:#fff;" onclick="resetAllData()">삭제할게요</button>
+      <button class="btn btg" style="flex:2;padding:13px;" onclick="closeModal()">취소 (데이터 유지)</button>
+    </div>
+  </div>\`;
+
+  if(m==='goal') return\`<div class="mbox">
     <div class="mhandle"></div>
     <div style="font-size:15px;font-weight:800;margin-bottom:14px;">🎯 목표 추가</div>
     <div style="margin-bottom:10px;"><label class="lbl">목표 이름</label><input class="inp" placeholder="내집마련, 해외여행 등" id="g-title" value="${f.title||''}"></div>
@@ -818,7 +1071,7 @@ function getModal(){
   return'';
 }
 
-// ── 이벤트 핸들러 ──
+// ── 핸들러 ──
 window.selectWho=u=>{APP.who=u;render();};
 window.logout=()=>{APP.who=null;render();};
 window.go=t=>{destroyCharts();APP.tab=t;APP.modal=null;render();};
@@ -834,9 +1087,8 @@ window.toggleDist=bid=>{
   if(!APP.data.settings.distributed)APP.data.settings.distributed={};
   if(APP.data.settings.distributed[key])delete APP.data.settings.distributed[key];
   else APP.data.settings.distributed[key]=true;
-  persist(); // 즉시 저장 + 즉시 렌더
+  persist();
 };
-
 window.saveSettings=()=>{
   const ss=APP.data.settings;
   ss.nameA=document.getElementById('s-nA')?.value||'김수연';
@@ -846,8 +1098,7 @@ window.saveSettings=()=>{
   ss.maxIncomeB=Number(document.getElementById('s-max')?.value||0);
   if(!ss.bucketTargets)ss.bucketTargets={};
   BUCKETS.flatMap(b=>b.items).forEach(i=>{const el=document.getElementById('bt-'+i.id);if(el&&el.value!=='')ss.bucketTargets[i.id]=Number(el.value);});
-  APP.modal=null;
-  persist();
+  APP.modal=null;persist();
 };
 window.submitInc=()=>{
   const amt=document.getElementById('f-amt')?.value;if(!amt)return;
@@ -876,10 +1127,23 @@ window.delExp=id=>{APP.data.expenses=APP.data.expenses.filter(e=>e.id!==id);pers
 window.delGoal=id=>{APP.data.goals=APP.data.goals.filter(g=>g.id!==id);persist();};
 window.updGoal=(id,v)=>{APP.data.goals=APP.data.goals.map(g=>g.id===id?{...g,current:Number(v)}:g);persist();};
 
-// ── 시작 ──
+window.confirmReset=()=>{
+  APP.modal='confirm_reset';
+  renderModal();
+};
+window.resetAllData=()=>{
+  APP.data.incomes=[];
+  APP.data.expenses=[];
+  APP.data.goals=[];
+  APP.data.settings.distributed={};
+  APP.data.settings.accum={};
+  APP.modal=null;
+  persist();
+};
+
 loadLocal();
 render();
-initFirebase(); // Firebase 있으면 자동 동기화, 없으면 무시
+initFirebase();
 </script>
 </body>
 </html>
